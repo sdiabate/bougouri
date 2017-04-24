@@ -19,7 +19,7 @@ public class WorkingDay {
 	private Weekday weekday;
 
 	@OneToMany
-	@JoinColumn(name = "WORKING_DAY_TIME_SLOT_ID", referencedColumnName = "ID")
+	@JoinColumn(name = "WORKING_DAY_ID", referencedColumnName = "ID")
 	private Set<TimeSlot> timeSlots;
 
 	public final Weekday getWeekday() {
