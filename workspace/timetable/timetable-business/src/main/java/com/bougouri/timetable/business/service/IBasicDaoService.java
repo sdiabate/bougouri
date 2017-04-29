@@ -1,6 +1,7 @@
 package com.bougouri.timetable.business.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import com.bougouri.timetable.business.model.AbstractEntity;
@@ -21,6 +22,6 @@ public interface IBasicDaoService {
 
 	<T extends AbstractEntity> void deleteAll(Class<T> clazz);
 
-	<T extends AbstractEntity> T find(Class<T> clazz, long entityId);
+	<T extends AbstractEntity> Optional<T> find(Class<T> clazz, long entityId);
 
 }

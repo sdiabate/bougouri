@@ -22,6 +22,14 @@ public class TimeSlot extends AbstractEntity {
 	@Column(name = "END_TIME")
 	private LocalTime endTime;
 
+	public TimeSlot() {
+	}
+
+	public TimeSlot(final LocalTime startTime, final LocalTime endTime) {
+		this.startTime = startTime;
+		this.endTime = endTime;
+	}
+
 	public final LocalTime getStartTime() {
 		return startTime;
 	}

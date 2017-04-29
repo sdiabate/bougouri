@@ -7,11 +7,10 @@ import javax.sql.DataSource;
 import org.h2.Driver;
 import org.hibernate.dialect.H2Dialect;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 @Configuration
-@Profile("dev")
+// @Profile("dev")
 public class H2DataSourceConfig implements IDataSourceConfig {
 
 	@Override
@@ -27,7 +26,7 @@ public class H2DataSourceConfig implements IDataSourceConfig {
 	@Override
 	public Properties getServerConnectionProperties() {
 		final Properties properties = new Properties();
-		properties.setProperty("hibernate.hbm2ddl.auto", "update");
+		properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
 		properties.setProperty("hibernate.dialect", H2Dialect.class.getName());
 		return properties;
 	}

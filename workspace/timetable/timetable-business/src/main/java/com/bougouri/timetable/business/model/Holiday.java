@@ -3,10 +3,16 @@ package com.bougouri.timetable.business.model;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
-public class Holiday {
+@Entity
+@Table(name = "HOLIDAY")
+public class Holiday extends AbstractEntity {
+
+	private static final long serialVersionUID = 1L;
 
 	@Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
 	@Column(name = "START_DATE_TIME")

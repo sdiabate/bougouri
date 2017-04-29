@@ -1,28 +1,40 @@
 package com.bougouri.timetable.business.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyColumn;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
-public class Appointment {
+@Entity
+@Table(name = "APPOINTMENT")
+public class Appointment extends AbstractEntity {
 
-	@Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDate")
+	private static final long serialVersionUID = 1L;
+
+	@Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
 	@Column(name = "APPOINTMENT_DATE")
-	private LocalDate date;
+	private LocalDateTime date;
+
+	/**
+	 * Duration in minutes
+	 */
+	@Column(name = "DURATION")
+	private int duration;
 
 	@ManyToOne
 	@JoinColumn(name = "TIME_SLOT_ID", referencedColumnName = "ID")
-	private TimeSlot timeSlot;
+	private Professional professional;
 
 	@Column(name = "CLIENT_NAME")
 	private String client;
@@ -36,23 +48,42 @@ public class Appointment {
 	@ElementCollection(fetch = FetchType.EAGER)
 	@MapKeyColumn(name = "PHONE_TYPE")
 	@Column(name = "PHONE_NUMBER")
-	@CollectionTable(name = "PROFESSIONAL_PHONES")
+	@CollectionTable(name = "APPOINTMENT_PHONES")
 	private final Map<String, String> phones = new HashMap<>();
 
-	public final LocalDate getDate() {
+	public final LocalDateTime getDate() {
 		return date;
 	}
 
-	public final void setDate(final LocalDate date) {
+	public final void setDate(final LocalDateTime date) {
 		this.date = date;
 	}
 
-	public final TimeSlot getTimeSlot() {
-		return timeSlot;
+	/**
+	 * The duration is expressed in minutes
+	 *
+	 * @return
+	 */
+	public final int getDuration() {
+		return duration;
 	}
 
-	public final void setTimeSlot(final TimeSlot timeSlot) {
-		this.timeSlot = timeSlot;
+	/**
+	 * The duration is expressed in minutes
+	 *
+	 * @param duration
+	 *            Duration in minutes
+	 */
+	public final void setDuration(final int duration) {
+		this.duration = duration;
+	}
+
+	public final Professional getProfessional() {
+		return professional;
+	}
+
+	public final void setProfessional(final Professional professional) {
+		this.professional = professional;
 	}
 
 	public final String getClient() {

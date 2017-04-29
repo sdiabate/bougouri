@@ -14,16 +14,16 @@ import javax.persistence.UniqueConstraint;
 import com.bougouri.timetable.business.model.AbstractEntity;
 
 @Entity
-@Table(name = "USERS", uniqueConstraints = @UniqueConstraint(columnNames = { "LOGIN_NAME" }))
+@Table(name = "USERS", uniqueConstraints = @UniqueConstraint(columnNames = { "LOGIN" }))
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "ACTOR_TYPE")
+@DiscriminatorColumn(name = "USER_TYPE")
 @DiscriminatorValue("USER")
 public class User extends AbstractEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "LOGIN_NAME")
-	private String loginName;
+	@Column(name = "LOGIN")
+	private String login;
 
 	@Column(name = "PASSWORD")
 	private String password;
@@ -42,15 +42,15 @@ public class User extends AbstractEntity {
 	private Profile profile;
 
 	/**
-	 * @param loginName
+	 * @param login
 	 * @param password
 	 * @param firstName
 	 * @param lastName
 	 * @param description
 	 * @param profile
 	 */
-	public User(final String loginName, final String password, final String firstName, final String lastName, final String description, final Profile profile) {
-		this.loginName = loginName;
+	public User(final String login, final String password, final String firstName, final String lastName, final String description, final Profile profile) {
+		this.login = login;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -61,12 +61,12 @@ public class User extends AbstractEntity {
 	public User() {
 	}
 
-	public String getLoginName() {
-		return loginName;
+	public String getLogin() {
+		return login;
 	}
 
-	public void setLoginName(final String loginName) {
-		this.loginName = loginName;
+	public void setLogin(final String login) {
+		this.login = login;
 	}
 
 	public String getPassword() {

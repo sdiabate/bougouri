@@ -17,9 +17,9 @@ import com.bougouri.timetable.business.dao.repository.IBasicRepository;
 import com.bougouri.timetable.business.model.AbstractEntity;
 
 @Service
-@org.springframework.context.annotation.Profile("prod")
+// @org.springframework.context.annotation.Profile("prod")
 @SuppressWarnings("unchecked")
-public class ServiceDao implements IBasicDaoService {
+public class DaoService implements IBasicDaoService {
 
 	@Autowired
 	private ApplicationContext appContext;
@@ -89,8 +89,12 @@ public class ServiceDao implements IBasicDaoService {
 	}
 
 	@Override
-	public <T extends AbstractEntity> T find(final Class<T> clazz, final long entityId) {
-		return getRepository(clazz).findOne(entityId);
+	public <T extends AbstractEntity> Optional<T> find(final Class<T> clazz, final long entityId) {
+		final T entity = getRepository(clazz).findOne(entityId);
+		if (entity != null) {
+			return Optional.of(entity);
+		}
+		return Optional.empty();
 	}
 
 }
