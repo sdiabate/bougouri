@@ -1,9 +1,9 @@
 package com.bougouri.timetable.business.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
@@ -41,11 +41,11 @@ public class Professional extends User {
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "PROFESSIONAL_ID", referencedColumnName = "ID")
-	private final Set<WorkingDay> workingDays = new HashSet<>();
+	private final List<WorkingDay> workingDays = new ArrayList<>();
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "PROFESSIONAL_ID", referencedColumnName = "ID")
-	private final Set<Holiday> holidays = new HashSet<>();
+	private final List<Holiday> holidays = new ArrayList<>();
 
 	public Professional() {
 	}
@@ -74,11 +74,11 @@ public class Professional extends User {
 		return phones;
 	}
 
-	public final Set<WorkingDay> getWorkingDays() {
+	public final List<WorkingDay> getWorkingDays() {
 		return workingDays;
 	}
 
-	public final Set<Holiday> getHolidays() {
+	public final List<Holiday> getHolidays() {
 		return holidays;
 	}
 

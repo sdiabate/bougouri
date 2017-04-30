@@ -4,7 +4,6 @@ import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -74,8 +73,8 @@ public class DaoTest {
 		Assert.assertEquals(LocalTime.of(8, 30), firstTimeSlot.getEndTime());
 	}
 
-	private Set<WorkingDay> createWorkingDays() {
-		return Stream.of(Weekday.values()).filter(weekday -> weekday != Weekday.SUNDAY).map(weekday -> createWorkingDay(weekday)).collect(Collectors.toSet());
+	private List<WorkingDay> createWorkingDays() {
+		return Stream.of(Weekday.values()).filter(weekday -> weekday != Weekday.SUNDAY).map(weekday -> createWorkingDay(weekday)).collect(Collectors.toList());
 	}
 
 	private WorkingDay createWorkingDay(final Weekday weekday) {
