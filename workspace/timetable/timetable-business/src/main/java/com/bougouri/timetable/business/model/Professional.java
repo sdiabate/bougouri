@@ -16,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.bougouri.timetable.business.model.security.Profile;
 import com.bougouri.timetable.business.model.security.User;
@@ -27,7 +29,9 @@ public class Professional extends User {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "SPECIALITY")
+	@NotNull
+	@Size(min = 1)
+	@Column(name = "SPECIALITY", nullable = false)
 	private String speciality;
 
 	@Column(name = "ADDRESS")

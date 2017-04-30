@@ -18,14 +18,14 @@ import com.bougouri.timetable.business.model.Professional;
 import com.bougouri.timetable.business.model.TimeSlot;
 import com.bougouri.timetable.business.model.Weekday;
 import com.bougouri.timetable.business.model.WorkingDay;
-import com.bougouri.timetable.business.service.DaoService;
+import com.bougouri.timetable.business.service.impl.BasicDaoService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Starter.class)
 public class DaoTest {
 
 	@Autowired
-	private DaoService daoService;
+	private BasicDaoService daoService;
 
 	@Test
 	public void contextLoads() throws Exception {
@@ -37,7 +37,8 @@ public class DaoTest {
 		// Assert that there is no professional entity in the database
 		Assert.assertEquals(0, daoService.getAll(Professional.class).size());
 		// Create a new professional with basic properties settled
-		final Professional professional = new Professional("sdi", "pwd", "KONE", "Seydou", "");
+		final Professional professional = new Professional("sdi", "pwdpwdpwdpwd", "KONE", "Seydou", "");
+		professional.setSpeciality("Gynecologue");
 		// Save the create professional in the database
 		daoService.save(professional);
 		// Check that the professional entity is correctly saved in the database

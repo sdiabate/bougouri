@@ -22,6 +22,20 @@
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.el</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
@@ -57,31 +71,14 @@
 			<artifactId>h2</artifactId>
 			<scope>test</scope>
 		</dependency>
-<!-- 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.assertj</groupId>
-			<artifactId>assertj-core</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.dbunit</groupId>
-			<artifactId>dbunit</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.github.springtestdbunit</groupId>
-			<artifactId>spring-test-dbunit</artifactId>
-			<scope>test</scope>
-		</dependency> -->
+		<!-- <dependency> <groupId>junit</groupId> <artifactId>junit</artifactId> 
+			<scope>test</scope> </dependency> <dependency> <groupId>org.assertj</groupId> 
+			<artifactId>assertj-core</artifactId> <scope>test</scope> </dependency> <dependency> 
+			<groupId>org.springframework</groupId> <artifactId>spring-test</artifactId> 
+			<scope>test</scope> </dependency> <dependency> <groupId>org.dbunit</groupId> 
+			<artifactId>dbunit</artifactId> <scope>test</scope> </dependency> <dependency> 
+			<groupId>com.github.springtestdbunit</groupId> <artifactId>spring-test-dbunit</artifactId> 
+			<scope>test</scope> </dependency> -->
 	</dependencies>
 
 	<build>

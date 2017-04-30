@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "WORKING_DAY")
@@ -19,8 +20,9 @@ public class WorkingDay extends AbstractEntity {
 
 	private static final long serialVersionUID = 1L;
 
+	@NotNull
 	@Enumerated(EnumType.STRING)
-	@Column(name = "WEEKDAY")
+	@Column(name = "WEEKDAY", nullable = false)
 	private Weekday weekday;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

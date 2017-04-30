@@ -1,4 +1,4 @@
-package com.bougouri.timetable.business.service;
+package com.bougouri.timetable.business.service.impl;
 
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
