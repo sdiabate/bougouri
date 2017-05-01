@@ -4,20 +4,25 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
+import org.joda.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.bougouri.timetable.business.dao.repository.IAppointmentRepository;
 import com.bougouri.timetable.business.model.AbstractEntity;
 import com.bougouri.timetable.business.model.Appointment;
 import com.bougouri.timetable.business.model.Holiday;
@@ -37,10 +42,14 @@ public class BusinessService implements IBusinessService {
 	@Autowired
 	private IBasicDaoService daoService;
 
+	@Autowired
+	private IAppointmentRepository appointmentRepository;
+
 	public BusinessService() {
 		validator = Validation.buildDefaultValidatorFactory().getValidator();
 	}
 
+	@Transactional
 	@Override
 	public void registerProfessional(final Professional professional) throws BusinessException {
 		validateEntity(professional);
@@ -48,6 +57,7 @@ public class BusinessService implements IBusinessService {
 		daoService.save(professional);
 	}
 
+	@Transactional
 	@Override
 	public void defineWorkingDays(final long professionalId, final List<WorkingDay> workingDays) throws BusinessException {
 		for (final WorkingDay workingDay : workingDays) {
@@ -60,28 +70,82 @@ public class BusinessService implements IBusinessService {
 		daoService.save(professional);
 	}
 
+	@Transactional
 	@Override
-	public void makeAppointment(final long professionalId, final Appointment appointment) throws BusinessException {
-		// TODO Auto-generated method stub
+	public void makeAppointment(final long professionalId, final Appointment appointment, final LocalDateTime curentDate) throws BusinessException {
 
+		final Professional professional = findProfessional(professionalId);
+		appointment.setProfessional(professional);
+
+		validateEntity(appointment);
+
+		// Check that the appointment is not in the past
+		if (appointment.getDate().isBefore(curentDate)) {
+			throw new BusinessException(ExceptionType.FUNCTIONAL, "The appointment is in the past");
+		}
+
+		final Interval appointmentInterval = new Interval(appointment.getDate().toEpochSecond(ZoneOffset.UTC),
+				appointment.getDate().plusMinutes(appointment.getDuration()).toEpochSecond(ZoneOffset.UTC));
+
+		// Check that the current appointment doesn't overlap with another
+		for (final Appointment current : getOnGoingAppointments(professionalId, curentDate)) {
+			final Interval currentInterval = new Interval(current.getDate().toEpochSecond(ZoneOffset.UTC), current.getDate().plusMinutes(current.getDuration()).toEpochSecond(ZoneOffset.UTC));
+			if (appointmentInterval.overlaps(currentInterval)) {
+				throw new BusinessException(ExceptionType.APPOINTMENT_OVERLAP, "The appointment overlaps another one");
+			}
+		}
+
+		// Check that the current appointment doesn't overlap an holiday
+		for (final Holiday holiday : getOnGoingHolidays(professionalId, curentDate)) {
+			final Interval interval = new Interval(holiday.getStartDateTime().toEpochSecond(ZoneOffset.UTC), holiday.getEndDateTime().toEpochSecond(ZoneOffset.UTC));
+			if (appointmentInterval.overlaps(interval)) {
+				throw new BusinessException(ExceptionType.APPOINTMENT_ON_HOLIDAY, "The appointment overlaps an holiday");
+			}
+		}
+
+		daoService.save(appointment);
 	}
 
 	@Override
-	public List<Appointment> getOnGoingAppointments(final long professionalId, final LocalDateTime referenceDate) throws BusinessException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Appointment> getOnGoingAppointments(final long professionalId, final LocalDateTime curentDate) throws BusinessException {
+		return appointmentRepository.getAppointmentsStartingFrom(curentDate, findProfessional(professionalId));
+	}
+
+	@Transactional
+	@Override
+	public void scheduleHoliday(final long professionalId, final Holiday holiday, final LocalDateTime curentDate) throws BusinessException {
+
+		validateEntity(holiday);
+
+		final Professional professional = findProfessional(professionalId);
+
+		final Interval holidayInterval = new Interval(holiday.getStartDateTime().toEpochSecond(ZoneOffset.UTC), holiday.getEndDateTime().toEpochSecond(ZoneOffset.UTC));
+
+		// Check that the current holiday doesn't overlap another one
+		for (final Holiday current : professional.getHolidays()) {
+			final Interval interval = new Interval(current.getStartDateTime().toEpochSecond(ZoneOffset.UTC), current.getEndDateTime().toEpochSecond(ZoneOffset.UTC));
+			if (holidayInterval.overlaps(interval)) {
+				throw new BusinessException(ExceptionType.HOLIDAY_OVERLAP, "The holiday overlaps another one");
+			}
+		}
+
+		// Check that the current holiday doen't overlap an appointment
+		for (final Appointment appointment : getOnGoingAppointments(professionalId, curentDate)) {
+			final Interval appointmentInterval = new Interval(appointment.getDate().toEpochSecond(ZoneOffset.UTC),
+					appointment.getDate().plusMinutes(appointment.getDuration()).toEpochSecond(ZoneOffset.UTC));
+			if (holidayInterval.overlaps(appointmentInterval)) {
+				throw new BusinessException(ExceptionType.HOLIDAY_ON_APPOINTMENT, "The holiday overlaps an appointment");
+			}
+		}
+
+		professional.getHolidays().add(holiday);
+
+		daoService.save(professional);
 	}
 
 	@Override
-	public void scheduleHoliday(final long professionalId, final Holiday holiday) throws BusinessException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public List<Holiday> getOnGoingHolidays(final long professionalId, final LocalDateTime referenceDate) throws BusinessException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Holiday> getOnGoingHolidays(final long professionalId, final LocalDateTime curentDate) throws BusinessException {
+		return findProfessional(professionalId).getHolidays().stream().filter(h -> h.getStartDateTime().isAfter(curentDate)).collect(Collectors.toList());
 	}
 
 	private Professional findProfessional(final long professionalId) throws BusinessException {
@@ -151,7 +215,9 @@ public class BusinessService implements IBusinessService {
 					}
 				}
 			}
+
 			// Manage the other case like Map
+
 			field.setAccessible(accessible);
 		}
 	}

@@ -15,11 +15,11 @@ public interface IBusinessService {
 
 	void defineWorkingDays(long professionalId, List<WorkingDay> workingDays) throws BusinessException;
 
-	void makeAppointment(long professionalId, Appointment appointment) throws BusinessException;
+	void makeAppointment(long professionalId, Appointment appointment, LocalDateTime curentDate) throws BusinessException;
 
-	List<Appointment> getOnGoingAppointments(long professionalId, LocalDateTime referenceDate) throws BusinessException;
+	List<Appointment> getOnGoingAppointments(long professionalId, LocalDateTime curentDate) throws BusinessException;
 
-	void scheduleHoliday(long professionalId, Holiday holiday) throws BusinessException;
+	void scheduleHoliday(long professionalId, Holiday holiday, LocalDateTime curentDate) throws BusinessException;
 
-	List<Holiday> getOnGoingHolidays(long professionalId, LocalDateTime referenceDate) throws BusinessException;
+	List<Holiday> getOnGoingHolidays(long professionalId, LocalDateTime curentDate) throws BusinessException;
 }

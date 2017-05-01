@@ -9,14 +9,13 @@ import javax.persistence.Enumerated;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.bougouri.timetable.business.model.AbstractEntity;
 
 @Entity
-@Table(name = "USERS", uniqueConstraints = @UniqueConstraint(columnNames = { "LOGIN" }))
+@Table(name = "USERS"/* , uniqueConstraints = @UniqueConstraint(columnNames = { "LOGIN" }) */)
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "USER_TYPE")
 @DiscriminatorValue("USER")
@@ -26,7 +25,7 @@ public class User extends AbstractEntity {
 
 	@NotNull
 	@Size(min = 3, max = 32)
-	@Column(name = "LOGIN", nullable = false)
+	@Column(name = "LOGIN", unique = true, nullable = false)
 	private String login;
 
 	@NotNull
