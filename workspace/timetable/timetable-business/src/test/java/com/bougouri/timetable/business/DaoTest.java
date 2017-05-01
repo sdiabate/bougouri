@@ -4,13 +4,10 @@ import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -18,14 +15,10 @@ import com.bougouri.timetable.business.model.Professional;
 import com.bougouri.timetable.business.model.TimeSlot;
 import com.bougouri.timetable.business.model.Weekday;
 import com.bougouri.timetable.business.model.WorkingDay;
-import com.bougouri.timetable.business.service.impl.BasicDaoService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Starter.class)
-public class DaoTest {
-
-	@Autowired
-	private BasicDaoService daoService;
+public class DaoTest extends AbstractTest {
 
 	@Test
 	public void contextLoads() throws Exception {
@@ -72,17 +65,6 @@ public class DaoTest {
 		final TimeSlot firstTimeSlot = monday.get().getTimeSlots().stream().sorted(Comparator.comparing(TimeSlot::getStartTime)).findFirst().get();
 		Assert.assertEquals(LocalTime.of(8, 0), firstTimeSlot.getStartTime());
 		Assert.assertEquals(LocalTime.of(8, 30), firstTimeSlot.getEndTime());
-	}
-
-	private List<WorkingDay> createWorkingDays() {
-		return Stream.of(Weekday.values()).filter(weekday -> weekday != Weekday.SUNDAY).map(weekday -> createWorkingDay(weekday)).collect(Collectors.toList());
-	}
-
-	private WorkingDay createWorkingDay(final Weekday weekday) {
-		final WorkingDay workingDay = new WorkingDay(weekday);
-		workingDay.getTimeSlots().add(new TimeSlot(LocalTime.of(8, 0), LocalTime.of(8, 30)));
-		workingDay.getTimeSlots().add(new TimeSlot(LocalTime.of(8, 30), LocalTime.of(9, 0)));
-		return workingDay;
 	}
 
 }

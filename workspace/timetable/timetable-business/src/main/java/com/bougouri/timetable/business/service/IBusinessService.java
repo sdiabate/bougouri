@@ -22,4 +22,6 @@ public interface IBusinessService {
 	void scheduleHoliday(long professionalId, Holiday holiday, LocalDateTime curentDate) throws BusinessException;
 
 	List<Holiday> getOnGoingHolidays(long professionalId, LocalDateTime curentDate) throws BusinessException;
+
+	Professional findProfessional(long professionalId) throws BusinessException;
 }

@@ -148,7 +148,8 @@ public class BusinessService implements IBusinessService {
 		return findProfessional(professionalId).getHolidays().stream().filter(h -> h.getStartDateTime().isAfter(curentDate)).collect(Collectors.toList());
 	}
 
-	private Professional findProfessional(final long professionalId) throws BusinessException {
+	@Override
+	public Professional findProfessional(final long professionalId) throws BusinessException {
 		final Optional<Professional> professional = daoService.find(Professional.class, professionalId);
 		if (professional.isPresent()) {
 			return professional.get();
