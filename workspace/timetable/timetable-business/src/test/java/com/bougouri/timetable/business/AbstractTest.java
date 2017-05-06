@@ -6,7 +6,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.After;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.bougouri.timetable.business.model.Appointment;
 import com.bougouri.timetable.business.model.Professional;
@@ -15,6 +18,8 @@ import com.bougouri.timetable.business.model.Weekday;
 import com.bougouri.timetable.business.model.WorkingDay;
 import com.bougouri.timetable.business.service.impl.BasicDaoService;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = Starter.class)
 public class AbstractTest {
 
 	@Autowired
