@@ -1,4 +1,4 @@
-package com.bougouri.timetable.business.service;
+package com.bougouri.timetable.business.service.impl;
 
 import java.time.ZonedDateTime;
 import java.util.Calendar;

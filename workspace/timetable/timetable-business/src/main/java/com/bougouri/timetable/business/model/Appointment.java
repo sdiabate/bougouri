@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Type;
 
@@ -22,21 +24,25 @@ public class Appointment extends AbstractEntity {
 
 	private static final long serialVersionUID = 1L;
 
+	@NotNull
 	@Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDateTime")
-	@Column(name = "APPOINTMENT_DATE")
+	@Column(name = "APPOINTMENT_DATE", nullable = false)
 	private LocalDateTime date;
 
 	/**
 	 * Duration in minutes
 	 */
-	@Column(name = "DURATION")
+	@Min(1)
+	@Column(name = "DURATION", nullable = false)
 	private int duration;
 
+	@NotNull
 	@ManyToOne
-	@JoinColumn(name = "TIME_SLOT_ID", referencedColumnName = "ID")
+	@JoinColumn(name = "TIME_SLOT_ID", referencedColumnName = "ID", nullable = false)
 	private Professional professional;
 
-	@Column(name = "CLIENT_NAME")
+	@NotNull
+	@Column(name = "CLIENT_NAME", nullable = false)
 	private String client;
 
 	@Column(name = "CLIENT_EMAIL")

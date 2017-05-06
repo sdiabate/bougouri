@@ -1,7 +1,7 @@
 package com.bougouri.timetable.business.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "WORKING_DAY")
@@ -19,13 +20,14 @@ public class WorkingDay extends AbstractEntity {
 
 	private static final long serialVersionUID = 1L;
 
+	@NotNull
 	@Enumerated(EnumType.STRING)
-	@Column(name = "WEEKDAY")
+	@Column(name = "WEEKDAY", nullable = false)
 	private Weekday weekday;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "WORKING_DAY_ID", referencedColumnName = "ID")
-	private final Set<TimeSlot> timeSlots = new HashSet<>();
+	private final List<TimeSlot> timeSlots = new ArrayList<>();
 
 	public WorkingDay() {
 	}
@@ -42,7 +44,7 @@ public class WorkingDay extends AbstractEntity {
 		this.weekday = weekday;
 	}
 
-	public final Set<TimeSlot> getTimeSlots() {
+	public final List<TimeSlot> getTimeSlots() {
 		return timeSlots;
 	}
 

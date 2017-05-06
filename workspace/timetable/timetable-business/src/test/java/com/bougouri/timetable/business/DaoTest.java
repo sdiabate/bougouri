@@ -4,29 +4,16 @@ import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.bougouri.timetable.business.model.Professional;
 import com.bougouri.timetable.business.model.TimeSlot;
 import com.bougouri.timetable.business.model.Weekday;
 import com.bougouri.timetable.business.model.WorkingDay;
-import com.bougouri.timetable.business.service.DaoService;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = Starter.class)
-public class DaoTest {
-
-	@Autowired
-	private DaoService daoService;
+public class DaoTest extends AbstractTest {
 
 	@Test
 	public void contextLoads() throws Exception {
@@ -38,7 +25,8 @@ public class DaoTest {
 		// Assert that there is no professional entity in the database
 		Assert.assertEquals(0, daoService.getAll(Professional.class).size());
 		// Create a new professional with basic properties settled
-		final Professional professional = new Professional("sdi", "pwd", "KONE", "Seydou", "");
+		final Professional professional = new Professional("sdi", "pwdpwdpwdpwd", "KONE", "Seydou", "");
+		professional.setSpeciality("Gynecologue");
 		// Save the create professional in the database
 		daoService.save(professional);
 		// Check that the professional entity is correctly saved in the database
@@ -72,17 +60,6 @@ public class DaoTest {
 		final TimeSlot firstTimeSlot = monday.get().getTimeSlots().stream().sorted(Comparator.comparing(TimeSlot::getStartTime)).findFirst().get();
 		Assert.assertEquals(LocalTime.of(8, 0), firstTimeSlot.getStartTime());
 		Assert.assertEquals(LocalTime.of(8, 30), firstTimeSlot.getEndTime());
-	}
-
-	private Set<WorkingDay> createWorkingDays() {
-		return Stream.of(Weekday.values()).filter(weekday -> weekday != Weekday.SUNDAY).map(weekday -> createWorkingDay(weekday)).collect(Collectors.toSet());
-	}
-
-	private WorkingDay createWorkingDay(final Weekday weekday) {
-		final WorkingDay workingDay = new WorkingDay(weekday);
-		workingDay.getTimeSlots().add(new TimeSlot(LocalTime.of(8, 0), LocalTime.of(8, 30)));
-		workingDay.getTimeSlots().add(new TimeSlot(LocalTime.of(8, 30), LocalTime.of(9, 0)));
-		return workingDay;
 	}
 
 }

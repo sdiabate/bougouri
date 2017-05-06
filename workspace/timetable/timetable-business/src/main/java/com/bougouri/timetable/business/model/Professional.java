@@ -1,9 +1,9 @@
 package com.bougouri.timetable.business.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
@@ -16,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.bougouri.timetable.business.model.security.Profile;
 import com.bougouri.timetable.business.model.security.User;
@@ -27,7 +29,9 @@ public class Professional extends User {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "SPECIALITY")
+	@NotNull
+	@Size(min = 1)
+	@Column(name = "SPECIALITY", nullable = false)
 	private String speciality;
 
 	@Column(name = "ADDRESS")
@@ -41,11 +45,11 @@ public class Professional extends User {
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "PROFESSIONAL_ID", referencedColumnName = "ID")
-	private final Set<WorkingDay> workingDays = new HashSet<>();
+	private final List<WorkingDay> workingDays = new ArrayList<>();
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "PROFESSIONAL_ID", referencedColumnName = "ID")
-	private final Set<Holiday> holidays = new HashSet<>();
+	private final List<Holiday> holidays = new ArrayList<>();
 
 	public Professional() {
 	}
@@ -74,11 +78,11 @@ public class Professional extends User {
 		return phones;
 	}
 
-	public final Set<WorkingDay> getWorkingDays() {
+	public final List<WorkingDay> getWorkingDays() {
 		return workingDays;
 	}
 
-	public final Set<Holiday> getHolidays() {
+	public final List<Holiday> getHolidays() {
 		return holidays;
 	}
 

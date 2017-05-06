@@ -9,12 +9,13 @@ import javax.persistence.Enumerated;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.bougouri.timetable.business.model.AbstractEntity;
 
 @Entity
-@Table(name = "USERS", uniqueConstraints = @UniqueConstraint(columnNames = { "LOGIN" }))
+@Table(name = "USERS"/* , uniqueConstraints = @UniqueConstraint(columnNames = { "LOGIN" }) */)
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "USER_TYPE")
 @DiscriminatorValue("USER")
@@ -22,23 +23,32 @@ public class User extends AbstractEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "LOGIN")
+	@NotNull
+	@Size(min = 3, max = 32)
+	@Column(name = "LOGIN", unique = true, nullable = false)
 	private String login;
 
-	@Column(name = "PASSWORD")
+	@NotNull
+	@Size(min = 8)
+	@Column(name = "PASSWORD", nullable = false)
 	private String password;
 
-	@Column(name = "FIRST_NAME")
+	@NotNull
+	@Size(min = 1)
+	@Column(name = "FIRST_NAME", nullable = false)
 	private String firstName;
 
-	@Column(name = "LAST_NAME")
+	@NotNull
+	@Size(min = 1)
+	@Column(name = "LAST_NAME", nullable = false)
 	private String lastName;
 
 	@Column(name = "DESCRIPTION")
 	private String description;
 
+	@NotNull
 	@Enumerated(EnumType.STRING)
-	@Column(name = "PROFILE")
+	@Column(name = "PROFILE", nullable = false)
 	private Profile profile;
 
 	/**

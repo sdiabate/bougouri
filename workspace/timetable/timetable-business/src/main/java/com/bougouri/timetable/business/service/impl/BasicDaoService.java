@@ -1,4 +1,4 @@
-package com.bougouri.timetable.business.service;
+package com.bougouri.timetable.business.service.impl;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -15,11 +15,12 @@ import org.springframework.stereotype.Service;
 
 import com.bougouri.timetable.business.dao.repository.IBasicRepository;
 import com.bougouri.timetable.business.model.AbstractEntity;
+import com.bougouri.timetable.business.service.IBasicDaoService;
 
 @Service
 // @org.springframework.context.annotation.Profile("prod")
 @SuppressWarnings("unchecked")
-public class DaoService implements IBasicDaoService {
+public class BasicDaoService implements IBasicDaoService {
 
 	@Autowired
 	private ApplicationContext appContext;

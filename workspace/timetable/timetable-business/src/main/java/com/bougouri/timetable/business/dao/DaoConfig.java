@@ -18,8 +18,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.bougouri.timetable.business.model.security.User;
-import com.bougouri.timetable.business.service.AuditingDateTimeProvider;
-import com.bougouri.timetable.business.service.UserAuditorAware;
+import com.bougouri.timetable.business.service.impl.AuditingDateTimeProvider;
+import com.bougouri.timetable.business.service.impl.UserAuditorAware;
 
 @Configuration
 @EnableJpaAuditing(dateTimeProviderRef = "dateTimeProvider")

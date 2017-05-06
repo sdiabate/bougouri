@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Type;
 
@@ -14,12 +15,14 @@ public class TimeSlot extends AbstractEntity {
 
 	private static final long serialVersionUID = 1L;
 
+	@NotNull
 	@Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalTime")
-	@Column(name = "START_TIME")
+	@Column(name = "START_TIME", nullable = false)
 	private LocalTime startTime;
 
+	@NotNull
 	@Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalTime")
-	@Column(name = "END_TIME")
+	@Column(name = "END_TIME", nullable = false)
 	private LocalTime endTime;
 
 	public TimeSlot() {
