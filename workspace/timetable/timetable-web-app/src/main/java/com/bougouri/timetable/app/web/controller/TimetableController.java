@@ -6,12 +6,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bougouri.timetable.app.web.model.ProfessionalModel;
 import com.bougouri.timetable.business.model.Professional;
+import com.bougouri.timetable.business.service.IBusinessService;
 import com.bougouri.timetable.business.service.Exception.BusinessException;
-import com.bougouri.timetable.business.service.impl.BusinessService;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -19,18 +20,19 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-public class Controller {
+@RequestMapping("timetable/")
+public class TimetableController {
 
 	// private static final Logger LOGGER = LoggerFactory.getLogger(Controller.class);
 
 	@Autowired
-	private BusinessService businessService;
+	private IBusinessService businessService;
 
 	@ApiOperation(value = "registerProfessional", nickname = "registerProfessional")
-	@ApiParam(name = "professionalModel", value = "Profesional", required = true)
+	@ApiParam(name = "professionalModel", value = "Professional", required = true)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = ProfessionalModel.class), @ApiResponse(code = 401, message = "Unauthorized"),
 			@ApiResponse(code = 403, message = "Forbidden"), @ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Failure") })
-	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "registerProfessional", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ProfessionalModel> registerProfessional(@RequestBody final ProfessionalModel professionalModel) throws BusinessException {
 		final Professional professional = new Professional();
 		professionalModel.to(professional);
