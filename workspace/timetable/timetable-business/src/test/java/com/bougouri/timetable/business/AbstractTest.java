@@ -9,6 +9,7 @@ import org.junit.After;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.bougouri.timetable.business.model.Appointment;
@@ -20,6 +21,7 @@ import com.bougouri.timetable.business.service.impl.BasicDaoService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Starter.class)
+@ActiveProfiles("dev")
 public class AbstractTest {
 
 	@Autowired
