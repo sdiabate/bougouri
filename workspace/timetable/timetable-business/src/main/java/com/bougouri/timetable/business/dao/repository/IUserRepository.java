@@ -5,5 +5,5 @@ import java.util.Optional;
 import com.bougouri.timetable.business.model.security.User;
 
 public interface IUserRepository extends IBasicRepository<User, Long> {
-	Optional<User> findByLogin(String login);
+	Optional<User> findFirstByLogin(String login);
 }
