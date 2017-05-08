@@ -24,4 +24,8 @@ public interface IBusinessService {
 	List<Holiday> getOnGoingHolidays(long professionalId, LocalDateTime curentDate) throws BusinessException;
 
 	Professional findProfessional(long professionalId) throws BusinessException;
+	
+	void cancelHoliday(long professionalId, LocalDateTime holidayStartDate) throws BusinessException;
+	
+	void cancelAppointment(long professionalId, LocalDateTime appointmentStartDate) throws BusinessException;
 }
