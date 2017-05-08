@@ -37,40 +37,40 @@ import com.bougouri.timetable.business.service.Exception.ExceptionType;
 
 @Service
 public class BusinessService implements IBusinessService {
-
+	
 	private final Validator validator;
-
+	
 	@Autowired
 	private IBasicDaoService daoService;
-
+	
 	@Autowired
 	private IAppointmentRepository appointmentRepository;
-
+	
 	@Autowired
 	private IUserRepository userRepository;
-
+	
 	public BusinessService() {
 		validator = Validation.buildDefaultValidatorFactory().getValidator();
 	}
-
+	
 	@Transactional
 	@Override
-	public void registerProfessional(final Professional professional) throws BusinessException {
+	public Professional registerProfessional(final Professional professional) throws BusinessException {
 		validateEntity(professional);
-		
+
 		// Check that the login is unique for new entities
 		if (professional.getId() == null && userRepository.findFirstByLogin(professional.getLogin()).isPresent()) {
 			throw new BusinessException(ExceptionType.LOGIN_ALREADY_EXISTS, String.format("Login %s already exist", professional.getLogin()));
 		}
-		
-		ensureWorkingDaysConsistency(professional.getWorkingDays());
-		
-		daoService.save(professional);
-	}
 
+		ensureWorkingDaysConsistency(professional.getWorkingDays());
+
+		return daoService.save(professional);
+	}
+	
 	@Transactional
 	@Override
-	public void defineWorkingDays(final long professionalId, final List<WorkingDay> workingDays) throws BusinessException {
+	public List<WorkingDay> defineWorkingDays(final long professionalId, final List<WorkingDay> workingDays) throws BusinessException {
 		for (final WorkingDay workingDay : workingDays) {
 			validateEntity(workingDay);
 		}
@@ -79,24 +79,26 @@ public class BusinessService implements IBusinessService {
 		professional.getWorkingDays().clear();
 		professional.getWorkingDays().addAll(workingDays);
 		daoService.save(professional);
+		
+		return professional.getWorkingDays();
 	}
-
+	
 	@Transactional
 	@Override
-	public void makeAppointment(final long professionalId, final Appointment appointment, final LocalDateTime curentDate) throws BusinessException {
-
+	public Appointment makeAppointment(final long professionalId, final Appointment appointment, final LocalDateTime curentDate) throws BusinessException {
+		
 		final Professional professional = findProfessional(professionalId);
 		appointment.setProfessional(professional);
-
+		
 		validateEntity(appointment);
-
+		
 		// Check that the appointment is not in the past
 		if (appointment.getDate().isBefore(curentDate)) {
 			throw new BusinessException(ExceptionType.FUNCTIONAL, "The appointment is in the past");
 		}
-
+		
 		final Interval appointmentInterval = new Interval(appointment.getDate().toEpochSecond(ZoneOffset.UTC), appointment.getDate().plusMinutes(appointment.getDuration()).toEpochSecond(ZoneOffset.UTC));
-
+		
 		// Check that the current appointment doesn't overlap with another
 		for (final Appointment current : getOnGoingAppointments(professionalId, curentDate)) {
 			final Interval currentInterval = new Interval(current.getDate().toEpochSecond(ZoneOffset.UTC), current.getDate().plusMinutes(current.getDuration()).toEpochSecond(ZoneOffset.UTC));
@@ -104,7 +106,7 @@ public class BusinessService implements IBusinessService {
 				throw new BusinessException(ExceptionType.APPOINTMENT_OVERLAP, "The appointment overlaps another one");
 			}
 		}
-
+		
 		// Check that the current appointment doesn't overlap an holiday
 		for (final Holiday holiday : getOnGoingHolidays(professionalId, curentDate)) {
 			final Interval interval = new Interval(holiday.getStartDateTime().toEpochSecond(ZoneOffset.UTC), holiday.getEndDateTime().toEpochSecond(ZoneOffset.UTC));
@@ -112,25 +114,25 @@ public class BusinessService implements IBusinessService {
 				throw new BusinessException(ExceptionType.APPOINTMENT_ON_HOLIDAY, "The appointment overlaps an holiday");
 			}
 		}
-
-		daoService.save(appointment);
+		
+		return daoService.save(appointment);
 	}
-
+	
 	@Override
 	public List<Appointment> getOnGoingAppointments(final long professionalId, final LocalDateTime curentDate) throws BusinessException {
 		return appointmentRepository.getAppointmentsStartingFrom(curentDate, findProfessional(professionalId));
 	}
-
+	
 	@Transactional
 	@Override
-	public void scheduleHoliday(final long professionalId, final Holiday holiday, final LocalDateTime curentDate) throws BusinessException {
-
+	public Holiday scheduleHoliday(final long professionalId, final Holiday holiday, final LocalDateTime curentDate) throws BusinessException {
+		
 		validateEntity(holiday);
-
+		
 		final Professional professional = findProfessional(professionalId);
-
+		
 		final Interval holidayInterval = new Interval(holiday.getStartDateTime().toEpochSecond(ZoneOffset.UTC), holiday.getEndDateTime().toEpochSecond(ZoneOffset.UTC));
-
+		
 		// Check that the current holiday doesn't overlap another one
 		for (final Holiday current : professional.getHolidays()) {
 			final Interval interval = new Interval(current.getStartDateTime().toEpochSecond(ZoneOffset.UTC), current.getEndDateTime().toEpochSecond(ZoneOffset.UTC));
@@ -138,7 +140,7 @@ public class BusinessService implements IBusinessService {
 				throw new BusinessException(ExceptionType.HOLIDAY_OVERLAP, "The holiday overlaps another one");
 			}
 		}
-
+		
 		// Check that the current holiday doen't overlap an appointment
 		for (final Appointment appointment : getOnGoingAppointments(professionalId, curentDate)) {
 			final Interval appointmentInterval = new Interval(appointment.getDate().toEpochSecond(ZoneOffset.UTC), appointment.getDate().plusMinutes(appointment.getDuration()).toEpochSecond(ZoneOffset.UTC));
@@ -146,17 +148,19 @@ public class BusinessService implements IBusinessService {
 				throw new BusinessException(ExceptionType.HOLIDAY_ON_APPOINTMENT, "The holiday overlaps an appointment");
 			}
 		}
-
+		
 		professional.getHolidays().add(holiday);
-
+		
 		daoService.save(professional);
+		
+		return holiday;
 	}
-
+	
 	@Override
 	public List<Holiday> getOnGoingHolidays(final long professionalId, final LocalDateTime curentDate) throws BusinessException {
 		return findProfessional(professionalId).getHolidays().stream().filter(h -> h.getStartDateTime().isAfter(curentDate)).collect(Collectors.toList());
 	}
-
+	
 	@Override
 	public Professional findProfessional(final long professionalId) throws BusinessException {
 		final Optional<Professional> professional = daoService.find(Professional.class, professionalId);
@@ -165,24 +169,30 @@ public class BusinessService implements IBusinessService {
 		}
 		throw new BusinessException(ExceptionType.MISSING_ENTITY, String.format("Professional entity with id %d not found", professionalId));
 	}
-
+	
 	@Transactional
 	@Override
-	public void cancelAppointment(final long professionalId, final LocalDateTime appointmentStartDate) throws BusinessException {
+	public Optional<Appointment> cancelAppointment(final long professionalId, final LocalDateTime appointmentStartDate) throws BusinessException {
 		final Optional<Appointment> appointment = appointmentRepository.findAppointment(appointmentStartDate, findProfessional(professionalId));
 		if (appointment.isPresent()) {
 			daoService.delete(appointment.get());
 		}
+		return appointment;
 	}
-
+	
 	@Transactional
 	@Override
-	public void cancelHoliday(final long professionalId, final LocalDateTime holidayStartDate) throws BusinessException {
+	public Optional<Holiday> cancelHoliday(final long professionalId, final LocalDateTime holidayStartDate) throws BusinessException {
 		final Professional professional = findProfessional(professionalId);
-		professional.getHolidays().removeIf(holiday -> holiday.getStartDateTime().equals(holidayStartDate));
-		daoService.save(professional);
+		final Optional<Holiday> holiday = professional.getHolidays().stream().filter(h -> h.getStartDateTime().equals(holidayStartDate)).findAny();
+		if (holiday.isPresent()) {
+			professional.getHolidays().remove(holiday.get());
+			daoService.save(professional);
+		}
+		
+		return holiday;
 	}
-
+	
 	private void ensureWorkingDaysConsistency(final List<WorkingDay> workingDays) throws BusinessException {
 		// Check that there is at most one working day per weekday
 		if (workingDays.stream().map(WorkingDay::getWeekday).distinct().count() < workingDays.size()) {
@@ -192,7 +202,7 @@ public class BusinessService implements IBusinessService {
 			ensureTimeSlotConsistency(workingDay.getTimeSlots());
 		}
 	}
-
+	
 	private void ensureTimeSlotConsistency(final List<TimeSlot> timeSlots) throws BusinessException {
 		timeSlots.sort(Comparator.comparing(TimeSlot::getStartTime));
 		TimeSlot previousTimeSlot = null;
@@ -207,7 +217,7 @@ public class BusinessService implements IBusinessService {
 			previousTimeSlot = timeSlot;
 		}
 	}
-
+	
 	private void validateEntity(final AbstractEntity entity) throws BusinessException {
 		final Set<ConstraintViolation<AbstractEntity>> violations = new HashSet<>();
 		try {
@@ -221,7 +231,7 @@ public class BusinessService implements IBusinessService {
 			throw new BusinessException(ExceptionType.INVALID_PROPERTY_VALUE, stringBuilder.toString());
 		}
 	}
-
+	
 	private void cascadeValidateEntity(final AbstractEntity entity, final Set<ConstraintViolation<AbstractEntity>> violations) throws IllegalArgumentException, IllegalAccessException {
 		// Validate the parent entity
 		violations.addAll(validator.validate(entity));
@@ -242,11 +252,11 @@ public class BusinessService implements IBusinessService {
 					}
 				}
 			}
-
+			
 			// Manage the other case like Map
-
+			
 			field.setAccessible(accessible);
 		}
 	}
-
+	
 }

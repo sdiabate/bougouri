@@ -45,7 +45,7 @@ public class UserModel<T extends User> extends AbstractModel<T> {
 		entity.setFirstName(firstName);
 		entity.setLastName(lastName);
 		if (profile != null && Stream.of(Profile.values()).anyMatch(p -> p.name().equalsIgnoreCase(profile))) {
-		entity.setProfile(Profile.valueOf(profile.toUpperCase()));
+			entity.setProfile(Profile.valueOf(profile.toUpperCase()));
 		}
 		entity.setDescription(description);
 		return entity;
