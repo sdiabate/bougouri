@@ -25,8 +25,7 @@ public class DaoTest extends AbstractTest {
 		// Assert that there is no professional entity in the database
 		Assert.assertEquals(0, daoService.getAll(Professional.class).size());
 		// Create a new professional with basic properties settled
-		final Professional professional = new Professional("sdi", "pwdpwdpwdpwd", "KONE", "Seydou", "");
-		professional.setSpeciality("Gynecologue");
+		final Professional professional = new Professional("sdi", "pwdpwdpwdpwd", "KONE", "Seydou", "Gynecologue", "");
 		// Save the create professional in the database
 		daoService.save(professional);
 		// Check that the professional entity is correctly saved in the database

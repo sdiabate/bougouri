@@ -54,8 +54,9 @@ public class Professional extends User {
 	public Professional() {
 	}
 
-	public Professional(final String loginName, final String password, final String firstName, final String lastName, final String description) {
+	public Professional(final String loginName, final String password, final String firstName, final String lastName, String speciality, final String description) {
 		super(loginName, password, firstName, lastName, description, Profile.PROFESSIONAL);
+		setSpeciality(speciality);
 	}
 
 	public final String getSpeciality() {
