@@ -17,10 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bougouri.timetable.app.web.model.AppointmentModel;
+import com.bougouri.timetable.app.web.model.HolidayModel;
 import com.bougouri.timetable.app.web.model.ProfessionalModel;
 import com.bougouri.timetable.app.web.model.WorkingDayModel;
 import com.bougouri.timetable.business.model.Appointment;
+import com.bougouri.timetable.business.model.Holiday;
 import com.bougouri.timetable.business.model.Professional;
+import com.bougouri.timetable.business.model.WorkingDay;
 import com.bougouri.timetable.business.service.IBasicDaoService;
 import com.bougouri.timetable.business.service.IBusinessService;
 
@@ -78,28 +81,39 @@ public class TimetableController {
 	}
 
 	@PostMapping(value = "scheduleHoliday", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Result> scheduleHoliday(final long professionalId, final String startDateTime, final String endDateTime) throws Exception {
-		throw new IllegalAccessException("Not implemented");
+	public ResponseEntity<Result> scheduleHoliday(final long professionalId, final HolidayModel holidayModel) throws Exception {
+		final LocalDateTime startDateTime = LocalDateTime.parse(holidayModel.getStartDateTime(), DATE_TIME_FORMATTER);
+		final LocalDateTime endDateTime = LocalDateTime.parse(holidayModel.getEndDateTime(), DATE_TIME_FORMATTER);
+		final Holiday holiday = new Holiday(startDateTime, endDateTime);
+		final Holiday scheduledHoliday = businessService.scheduleHoliday(professionalId, holiday, LocalDateTime.now());
+		return new ResponseEntity<>(new Result(holidayModel.from(scheduledHoliday)), HttpStatus.OK);
 	}
 	
-	@PostMapping(value = "scheduleHoliday", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Result> cancelHoliday(final long professionalId, final String startDateTime, final String endDateTime) throws Exception {
-		throw new IllegalAccessException("Not implemented");
+	@PostMapping(value = "cancelHoliday", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Result> cancelHoliday(final long professionalId, final String startDateTime) throws Exception {
+		final Optional<Holiday> cancelledHoliday = businessService.cancelHoliday(professionalId, LocalDateTime.parse(startDateTime, DATE_TIME_FORMATTER));
+		final HolidayModel holidayModel = new HolidayModel();
+		cancelledHoliday.ifPresent(h -> holidayModel.from(h));
+		return new ResponseEntity<>(new Result(holidayModel), HttpStatus.OK);
 	}
 
-	@PostMapping(value = "scheduleHoliday", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Result> defineWorkingDays(final long professionalId, final List<WorkingDayModel> workingDays) throws Exception {
-		throw new IllegalAccessException("Not implemented");
+	@PostMapping(value = "defineWorkingDays", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Result> defineWorkingDays(final long professionalId, final List<WorkingDayModel> workingDayModels) throws Exception {
+		final List<WorkingDay> workingDays = workingDayModels.stream().map(workingDayModel -> workingDayModel.to(new WorkingDay())).collect(Collectors.toList());
+		businessService.defineWorkingDays(professionalId, workingDays);
+		return new ResponseEntity<>(new Result(null), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "scheduleHoliday", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "getOnGoingAppointments", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Result> getOnGoingAppointments(final long professionalId) throws Exception {
-		throw new IllegalAccessException("Not implemented");
+		final List<AppointmentModel> appointmentModels = businessService.getOnGoingAppointments(professionalId, LocalDateTime.now()).stream().map(a -> new AppointmentModel().from(a)).collect(Collectors.toList());
+		return new ResponseEntity<>(new Result(appointmentModels), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "scheduleHoliday", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "getOnGoingHolidays", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Result> getOnGoingHolidays(final long professionalId) throws Exception {
-		throw new IllegalAccessException("Not implemented");
+		final List<HolidayModel> holidayModels = businessService.getOnGoingHolidays(professionalId, LocalDateTime.now()).stream().map(h -> new HolidayModel().from(h)).collect(Collectors.toList());
+		return new ResponseEntity<>(new Result(holidayModels), HttpStatus.OK);
 	}
 
 }
