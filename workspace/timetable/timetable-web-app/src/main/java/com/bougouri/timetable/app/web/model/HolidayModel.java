@@ -1,11 +1,26 @@
 package com.bougouri.timetable.app.web.model;
 
 import com.bougouri.timetable.business.model.Holiday;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class HolidayModel extends AbstractModel<Holiday> {
 
+	@JsonProperty
+	private long professionalId;
+	
+	@JsonProperty
 	private String startDateTime;
+	
+	@JsonProperty
 	private String endDateTime;
+	
+	public final long getProfessionalId() {
+		return professionalId;
+	}
+	
+	public final void setProfessionalId(final long professionalId) {
+		this.professionalId = professionalId;
+	}
 
 	public final String getStartDateTime() {
 		return startDateTime;
