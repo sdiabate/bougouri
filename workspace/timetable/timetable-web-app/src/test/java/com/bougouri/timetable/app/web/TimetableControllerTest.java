@@ -1,6 +1,9 @@
 package com.bougouri.timetable.app.web;
 
+import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.assertj.core.api.Assertions;
 import org.junit.After;
@@ -19,6 +22,9 @@ import com.bougouri.timetable.app.web.controller.Result;
 import com.bougouri.timetable.app.web.model.ProfessionalModel;
 import com.bougouri.timetable.business.model.Appointment;
 import com.bougouri.timetable.business.model.Professional;
+import com.bougouri.timetable.business.model.TimeSlot;
+import com.bougouri.timetable.business.model.Weekday;
+import com.bougouri.timetable.business.model.WorkingDay;
 import com.bougouri.timetable.business.service.Exception.ExceptionType;
 import com.bougouri.timetable.business.service.impl.BasicDaoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -71,6 +77,27 @@ public class TimetableControllerTest {
 		final ResponseEntity<Result> getAllProfessionalResponse = template.getForEntity(getUrl("professionalList"), Result.class);
 		Assertions.assertThat(getAllProfessionalResponse.getStatusCode().value()).isEqualTo(200);
 		Assertions.assertThat(toListObject(getAllProfessionalResponse.getBody(), ProfessionalModel.class).size()).isEqualTo(0);
+	}
+	
+	@Test
+	public void defineWorkingDaysTest() {
+		final Professional professional = new Professional("sdi", "pwdpwdpwdpwd", "Seydou", "KONE", "Gynecologue", "");
+		final ResponseEntity<Result> createProfessionalResponse = template.postForEntity(getUrl("registerProfessional"), new ProfessionalModel().from(professional), Result.class);
+		Assertions.assertThat(createProfessionalResponse.getStatusCode().value()).isEqualTo(200);
+		Assertions.assertThat(toSingleObject(createProfessionalResponse.getBody(), ProfessionalModel.class).to(new Professional()).getLogin()).isEqualTo("sdi");
+
+		// TODO Create an register the working days
+	}
+	
+	protected List<WorkingDay> createWorkingDays() {
+		return Stream.of(Weekday.values()).filter(weekday -> weekday != Weekday.SUNDAY).map(weekday -> createWorkingDay(weekday)).collect(Collectors.toList());
+	}
+	
+	private WorkingDay createWorkingDay(final Weekday weekday) {
+		final WorkingDay workingDay = new WorkingDay(weekday);
+		workingDay.getTimeSlots().add(new TimeSlot(LocalTime.of(8, 0), LocalTime.of(8, 30)));
+		workingDay.getTimeSlots().add(new TimeSlot(LocalTime.of(8, 30), LocalTime.of(9, 0)));
+		return workingDay;
 	}
 	
 	private String getUrl(final String service) {

@@ -15,17 +15,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
+	
 	@Autowired
 	private UserDetailsService userDetailsService;
-
+	
 	@Override
 	protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
-
+	
 	@Override
-	public void configure(WebSecurity web) throws Exception {
+	public void configure(final WebSecurity web) throws Exception {
 		// @formatter:off
 		web.ignoring().antMatchers(
 				"/v2/api-docs",
@@ -37,12 +37,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				);
 		// @formatter:on
 	}
-
+	
 	// @formatter:off
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 		.antMatchers("/admin").access("hasRole('ROLE_ADMIN')").anyRequest().permitAll()
+		.antMatchers("/professional").access("hasRole('ROLE_PROFESSIONAL')").anyRequest().permitAll()
 		.and()
 		.formLogin().loginPage("/login").failureUrl("/login?error")
 		.and()
@@ -53,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.csrf();
 	}
 	// @formatter:on
-
+	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
