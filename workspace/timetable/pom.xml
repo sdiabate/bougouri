@@ -20,7 +20,7 @@
 
 	<modules>
 		<module>timetable-business</module>
-		<module>timetable-web-app</module>
+		<module>timetable-web-services</module>
 	</modules>
 
 	<dependencyManagement>
