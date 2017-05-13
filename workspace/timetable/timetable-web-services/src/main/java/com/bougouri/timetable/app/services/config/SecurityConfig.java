@@ -1,4 +1,4 @@
-package com.bougouri.timetable.app.web.config;
+package com.bougouri.timetable.app.services.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

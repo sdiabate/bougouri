@@ -1,4 +1,4 @@
-package com.bougouri.timetable.app.web.controller;
+package com.bougouri.timetable.app.services.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bougouri.timetable.app.web.model.AppointmentModel;
-import com.bougouri.timetable.app.web.model.HolidayModel;
-import com.bougouri.timetable.app.web.model.ProfessionalModel;
-import com.bougouri.timetable.app.web.model.WorkingDayList;
+import com.bougouri.timetable.app.services.model.AppointmentModel;
+import com.bougouri.timetable.app.services.model.HolidayModel;
+import com.bougouri.timetable.app.services.model.ProfessionalModel;
+import com.bougouri.timetable.app.services.model.WorkingDayList;
 import com.bougouri.timetable.business.model.Appointment;
 import com.bougouri.timetable.business.model.Holiday;
 import com.bougouri.timetable.business.model.Professional;

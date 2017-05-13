@@ -1,4 +1,4 @@
-package com.bougouri.timetable.app.web.model;
+package com.bougouri.timetable.app.services.model;
 
 import com.bougouri.timetable.business.model.WorkingDay;
 

@@ -1,4 +1,4 @@
-package com.bougouri.timetable.app.web.controller;
+package com.bougouri.timetable.app.services.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

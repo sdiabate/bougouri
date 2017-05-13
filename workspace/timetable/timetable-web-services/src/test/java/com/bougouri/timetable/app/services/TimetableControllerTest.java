@@ -1,4 +1,4 @@
-package com.bougouri.timetable.app.web;
+package com.bougouri.timetable.app.services;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -19,8 +19,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.bougouri.timetable.app.services.WebStarter;
-import com.bougouri.timetable.app.web.controller.Result;
-import com.bougouri.timetable.app.web.model.ProfessionalModel;
+import com.bougouri.timetable.app.services.controller.Result;
+import com.bougouri.timetable.app.services.model.ProfessionalModel;
 import com.bougouri.timetable.business.model.Appointment;
 import com.bougouri.timetable.business.model.Professional;
 import com.bougouri.timetable.business.model.TimeSlot;

@@ -1,4 +1,4 @@
-package com.bougouri.timetable.app.web.controller;
+package com.bougouri.timetable.app.services.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
