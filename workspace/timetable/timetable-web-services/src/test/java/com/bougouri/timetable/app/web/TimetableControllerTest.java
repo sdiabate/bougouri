@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.bougouri.timetable.app.services.WebStarter;
 import com.bougouri.timetable.app.web.controller.Result;
 import com.bougouri.timetable.app.web.model.ProfessionalModel;
 import com.bougouri.timetable.business.model.Appointment;

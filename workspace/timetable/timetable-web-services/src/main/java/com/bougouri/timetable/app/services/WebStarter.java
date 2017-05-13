@@ -1,4 +1,4 @@
-package com.bougouri.timetable.app.web;
+package com.bougouri.timetable.app.services;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
