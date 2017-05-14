@@ -27,10 +27,10 @@ public class SwaggerConfig {
 		return new ApiInfoBuilder()
 				.title("Timetable")
 				.description("Free online timetable")
-				.termsOfServiceUrl("https://timetable/terms")
-				.contact(new Contact("bougouri", "http://", "timetable@bougouri.com"))
+				.termsOfServiceUrl("https://bougouri/timetable/terms")
+				.contact(new Contact("bougouri", "http://www.bougouri.com", "timetable@bougouri.com"))
 				.license("Apache License Version 2.0")
-				.licenseUrl("https://timetable/licence")
+				.licenseUrl("https://bougouri/timetable/licence")
 				.version("1.0")
 				.build();
 	}

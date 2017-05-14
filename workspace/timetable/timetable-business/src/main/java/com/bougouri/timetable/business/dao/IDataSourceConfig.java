@@ -5,7 +5,8 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 public interface IDataSourceConfig {
-	DataSource getDataSource();
 
+	DataSource getDataSource();
+	
 	Properties getServerConnectionProperties();
 }

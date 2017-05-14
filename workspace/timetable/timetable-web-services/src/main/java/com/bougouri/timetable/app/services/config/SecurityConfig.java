@@ -15,15 +15,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	
+
 	@Autowired
 	private UserDetailsService userDetailsService;
-	
+
 	@Override
 	protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
-	
+
 	@Override
 	public void configure(final WebSecurity web) throws Exception {
 		// @formatter:off
@@ -33,11 +33,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				"/swagger-resources/configuration/security",
 				"/swagger-resources", "/swagger-ui.html",
 				"/webjars/**",
-				"/timetable/registerProfessional" // TODO Remove from the ignored list
+				"/timetable/professional/**" // TODO Remove from the ignored list
 				);
 		// @formatter:on
 	}
-	
+
 	// @formatter:off
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.csrf();
 	}
 	// @formatter:on
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();

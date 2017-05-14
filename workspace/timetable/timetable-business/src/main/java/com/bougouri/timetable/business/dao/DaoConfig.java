@@ -26,10 +26,10 @@ import com.bougouri.timetable.business.service.impl.UserAuditorAware;
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.bougouri.timetable.business.dao.repository")
 public class DaoConfig {
-
+	
 	@Autowired
 	private IDataSourceConfig dataSourceConfig;
-
+	
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -40,27 +40,27 @@ public class DaoConfig {
 		em.setJpaProperties(dataSourceConfig.getServerConnectionProperties());
 		return em;
 	}
-
+	
 	@Bean
 	public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
 		final JpaTransactionManager transactionManager = new JpaTransactionManager();
 		transactionManager.setEntityManagerFactory(emf);
 		return transactionManager;
 	}
-
+	
 	@Bean
 	public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
 		return new PersistenceExceptionTranslationPostProcessor();
 	}
-
+	
 	@Bean
 	public DateTimeProvider dateTimeProvider() {
 		return new AuditingDateTimeProvider();
 	}
-
+	
 	@Bean
 	public AuditorAware<User> auditorProvider() {
 		return new UserAuditorAware();
 	}
-
+	
 }

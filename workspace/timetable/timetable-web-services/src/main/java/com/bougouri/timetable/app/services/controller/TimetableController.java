@@ -30,7 +30,7 @@ import com.bougouri.timetable.business.service.IBusinessService;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("timetable/")
+@RequestMapping("timetable/professional/")
 public class TimetableController {
 
 	private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("d[d]/M[M]/yyyy H[H]:m[m]:s[s]");
