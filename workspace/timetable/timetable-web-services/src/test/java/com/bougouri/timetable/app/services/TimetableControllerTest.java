@@ -30,7 +30,7 @@ import com.bougouri.timetable.business.service.impl.BasicDaoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = WebStarter.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = WebServiceStarter.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 // @WebMvcTest(TimetableController.class)
 @ActiveProfiles("dev")
 public class TimetableControllerTest {

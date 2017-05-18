@@ -20,7 +20,7 @@ import com.bougouri.timetable.business.model.WorkingDay;
 import com.bougouri.timetable.business.service.impl.BasicDaoService;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Starter.class)
+@SpringBootTest(classes = BusinessStarter.class)
 @ActiveProfiles("dev")
 public class AbstractTest {
 	
