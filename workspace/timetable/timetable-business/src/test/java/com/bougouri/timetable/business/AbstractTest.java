@@ -23,25 +23,25 @@ import com.bougouri.timetable.business.service.impl.BasicDaoService;
 @SpringBootTest(classes = BusinessStarter.class)
 @ActiveProfiles("dev")
 public class AbstractTest {
-	
+
 	@Autowired
 	protected BasicDaoService daoService;
-	
+
 	@After
 	public void cleanDatabase() {
-		daoService.deleteAll(Professional.class);
 		daoService.deleteAll(Appointment.class);
+		daoService.deleteAll(Professional.class);
 	}
-	
+
 	protected List<WorkingDay> createWorkingDays() {
 		return Stream.of(Weekday.values()).filter(weekday -> weekday != Weekday.SUNDAY).map(weekday -> createWorkingDay(weekday)).collect(Collectors.toList());
 	}
-	
+
 	private WorkingDay createWorkingDay(final Weekday weekday) {
 		final WorkingDay workingDay = new WorkingDay(weekday);
 		workingDay.getTimeSlots().add(new TimeSlot(LocalTime.of(8, 0), LocalTime.of(8, 30)));
 		workingDay.getTimeSlots().add(new TimeSlot(LocalTime.of(8, 30), LocalTime.of(9, 0)));
 		return workingDay;
 	}
-	
+
 }
