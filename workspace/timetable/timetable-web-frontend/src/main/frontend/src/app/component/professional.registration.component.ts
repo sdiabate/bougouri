@@ -18,4 +18,8 @@ export class ProfessionalRegistrationComponent {
   public register(): void {
     console.log(this.professional);
   }
+    
+    public cancel(): void {
+      console.log('Operation cancelled !');
+    }
 }
