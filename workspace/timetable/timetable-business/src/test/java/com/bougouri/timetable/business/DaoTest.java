@@ -1,5 +1,6 @@
 package com.bougouri.timetable.business;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Optional;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.bougouri.timetable.business.model.Appointment;
 import com.bougouri.timetable.business.model.Professional;
 import com.bougouri.timetable.business.model.TimeSlot;
 import com.bougouri.timetable.business.model.Weekday;
@@ -59,6 +61,22 @@ public class DaoTest extends AbstractTest {
 		final TimeSlot firstTimeSlot = monday.get().getTimeSlots().stream().sorted(Comparator.comparing(TimeSlot::getStartTime)).findFirst().get();
 		Assert.assertEquals(LocalTime.of(8, 0), firstTimeSlot.getStartTime());
 		Assert.assertEquals(LocalTime.of(8, 30), firstTimeSlot.getEndTime());
+	}
+	
+	@Test
+	public void AppointmentTest(){
+		final Appointment appointment = new Appointment();
+		appointment.setAddress("25 avenue Pierre Gilles 13100 Aix-en-Provence");
+		appointment.setClient("Maïmouna Zoundi");
+		appointment.setDate(LocalDateTime.now().plusDays(10));
+		appointment.setDuration(30);
+		appointment.setEmail("jte@live.fr");
+		
+		final Professional professional = new Professional("jtraore", "jtraorepwd", "Jacques", "TRAORE", "Conseillé stratégie", "Aide les pays à s'auto-suffir quand c'est possible");
+		
+		daoService.save(professional);
+		
+		appointment.setProfessional(professional);
 	}
 
 }
