@@ -1,4 +1,4 @@
-import {Professional} from '../model/professional';
+import {Professional} from '../model/professional.model';
 
 describe('Professional', () => {
   it('should create an instance', () => {

@@ -26,65 +26,65 @@ import com.bougouri.timetable.business.model.security.User;
 @Table(name = "PROFESSIONAL")
 @DiscriminatorValue("PROFESSIONAL")
 public class Professional extends User {
-
+	
 	private static final long serialVersionUID = 1L;
-
+	
 	@NotNull
 	@Size(min = 1)
-	@Column(name = "SPECIALITY", nullable = false)
-	private String speciality;
-
+	@Column(name = "SPECIALTY", nullable = false)
+	private String specialty;
+	
 	@Column(name = "ADDRESS")
 	private String address;
-
+	
 	@ElementCollection(fetch = FetchType.EAGER)
 	@MapKeyColumn(name = "PHONE_TYPE")
 	@Column(name = "PHONE_NUMBER")
 	@CollectionTable(name = "PROFESSIONAL_PHONES")
 	private final Map<String, String> phones = new HashMap<>();
-
+	
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "PROFESSIONAL_ID", referencedColumnName = "ID")
 	private final List<WorkingDay> workingDays = new ArrayList<>();
-
+	
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "PROFESSIONAL_ID", referencedColumnName = "ID")
 	private final List<Holiday> holidays = new ArrayList<>();
-
+	
 	public Professional() {
 	}
-
-	public Professional(final String loginName, final String password, final String firstName, final String lastName, String speciality, final String description) {
+	
+	public Professional(final String loginName, final String password, final String firstName, final String lastName, final String speciality, final String description) {
 		super(loginName, password, firstName, lastName, description, Profile.PROFESSIONAL);
-		setSpeciality(speciality);
+		setSpecialty(speciality);
 	}
-
-	public final String getSpeciality() {
-		return speciality;
+	
+	public final String getSpecialty() {
+		return specialty;
 	}
-
-	public final void setSpeciality(final String speciality) {
-		this.speciality = speciality;
+	
+	public final void setSpecialty(final String speciality) {
+		specialty = speciality;
 	}
-
+	
 	public final String getAddress() {
 		return address;
 	}
-
+	
 	public final void setAddress(final String address) {
 		this.address = address;
 	}
-
+	
 	public Map<String, String> getPhones() {
 		return phones;
 	}
-
+	
 	public final List<WorkingDay> getWorkingDays() {
 		return workingDays;
 	}
-
+	
 	public final List<Holiday> getHolidays() {
 		return holidays;
 	}
-
+	
 }
