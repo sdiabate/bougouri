@@ -1,0 +1,15 @@
+.time-slot {
+	text-align: center;
+	float:left;
+	width:150px;
+	height:75px;
+	line-height:75px;
+}
+
+.time-slot-selected {
+	background-color:#c0c0c0;
+}
+
+.time-slot-not-selected {
+	background-color:#0080ff;
+}

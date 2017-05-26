@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { LoginComponent } from './component/authentication.component';
 import { ProfessionalRegistrationComponent } from './component/professional.registration.component';
+import { TimeSlotComponent } from './component/time.slot.component';
 import { AuthenticationService } from './service/authentication.service';
 import { ProfessionalService } from './service/professional.service';
 
@@ -18,7 +19,8 @@ export function restangularConfigFactory (RestangularProvider) {
 @NgModule({
   declarations: [
     LoginComponent,
-    ProfessionalRegistrationComponent
+    ProfessionalRegistrationComponent,
+    TimeSlotComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +31,7 @@ export function restangularConfigFactory (RestangularProvider) {
     ButtonsModule.forRoot()
   ],
   providers: [AuthenticationService, ProfessionalService],
-  bootstrap: [LoginComponent, ProfessionalRegistrationComponent],
+  bootstrap: [LoginComponent, ProfessionalRegistrationComponent, TimeSlotComponent]
 })
   
 export class AppModule { }
