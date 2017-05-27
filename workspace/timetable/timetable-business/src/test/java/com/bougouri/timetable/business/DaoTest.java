@@ -62,7 +62,7 @@ public class DaoTest extends AbstractTest {
 		Assert.assertEquals(LocalTime.of(8, 0), firstTimeSlot.getStartTime());
 		Assert.assertEquals(LocalTime.of(8, 30), firstTimeSlot.getEndTime());
 	}
-	
+
 	@Test
 	public void AppointmentTest(){
 		final Appointment appointment = new Appointment();
@@ -71,12 +71,25 @@ public class DaoTest extends AbstractTest {
 		appointment.setDate(LocalDateTime.now().plusDays(10));
 		appointment.setDuration(30);
 		appointment.setEmail("jte@live.fr");
-		
+
 		final Professional professional = new Professional("jtraore", "jtraorepwd", "Jacques", "TRAORE", "Conseillé stratégie", "Aide les pays à s'auto-suffir quand c'est possible");
-		
+
 		daoService.save(professional);
-		
+
 		appointment.setProfessional(professional);
+		daoService.save(appointment);
+
+		//Verify that the appointment is saved correctly
+		final List<Appointment> appointments = daoService.getAll(Appointment.class);
+		Assert.assertEquals(1, appointments.size());
+		final Appointment savedAppointment = appointments.get(0);
+		Assert.assertEquals("jte@live.fr", savedAppointment.getEmail());
+		Assert.assertEquals(30, savedAppointment.getDuration());
+
+		//Verify that the professional linked to the appointment is correct.
+		final Professional professionalLinked = savedAppointment.getProfessional();
+		Assert.assertEquals(professional, professionalLinked);
+
 	}
 
 }
