@@ -130,4 +130,23 @@ public class DaoTest extends AbstractTest {
 		Assert.assertEquals(endDate, holiday.getEndDateTime());
 	}
 
+	@Test
+	public void AuditingTest(){
+		final User user = new User();
+		user.setDescription("Utilisateur crée pour les tests unitaires");
+		user.setFirstName("Nessan");
+		user.setLastName("TRAORE");
+		user.setLogin("ntraore");
+		user.setPassword("pAsswordntra0re");
+		user.setProfile(Profile.USER);
+
+		daoService.save(user);
+		//TODO Complete the implementation of the test.
+
+		//		Assert.assertEquals("", user.getCreatedBy());
+		//		Assert.assertEquals("", user.getLastModifiedBy());
+		//		Assert.assertEquals("", user.getCreatedDate());
+		//		Assert.assertEquals("", user.getLastModifiedDate());
+	}
+
 }
