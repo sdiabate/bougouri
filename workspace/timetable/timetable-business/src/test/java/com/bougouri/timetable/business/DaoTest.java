@@ -10,6 +10,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.bougouri.timetable.business.model.Appointment;
+import com.bougouri.timetable.business.model.Holiday;
 import com.bougouri.timetable.business.model.Professional;
 import com.bougouri.timetable.business.model.TimeSlot;
 import com.bougouri.timetable.business.model.Weekday;
@@ -111,6 +112,22 @@ public class DaoTest extends AbstractTest {
 		final User userSaved = users.get(0);
 		Assert.assertEquals("Nessan", userSaved.getFirstName());
 		Assert.assertEquals("ntraore", userSaved.getLogin());
+	}
+
+	@Test
+	public void HolidayTest(){
+
+		final LocalDateTime startDate = LocalDateTime.now().plusMonths(2);
+		final LocalDateTime endDate = LocalDateTime.now().plusMonths(3);
+
+		final Holiday holiday = new Holiday(startDate, endDate);
+		daoService.save(holiday);
+
+		//Verify that thye holiday is saved properly
+		final List<Holiday> holidays = daoService.getAll(Holiday.class);
+		Assert.assertEquals(1, holidays.size());
+		Assert.assertEquals(startDate, holiday.getStartDateTime());
+		Assert.assertEquals(endDate, holiday.getEndDateTime());
 	}
 
 }
