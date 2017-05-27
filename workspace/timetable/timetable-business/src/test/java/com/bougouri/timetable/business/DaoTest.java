@@ -14,6 +14,8 @@ import com.bougouri.timetable.business.model.Professional;
 import com.bougouri.timetable.business.model.TimeSlot;
 import com.bougouri.timetable.business.model.Weekday;
 import com.bougouri.timetable.business.model.WorkingDay;
+import com.bougouri.timetable.business.model.security.Profile;
+import com.bougouri.timetable.business.model.security.User;
 
 public class DaoTest extends AbstractTest {
 
@@ -90,6 +92,25 @@ public class DaoTest extends AbstractTest {
 		final Professional professionalLinked = savedAppointment.getProfessional();
 		Assert.assertEquals(professional, professionalLinked);
 
+	}
+
+	@Test
+	public void UserTest(){
+		final User user = new User();
+		user.setDescription("Utilisateur crée pour les tests unitaires");
+		user.setFirstName("Nessan");
+		user.setLastName("TRAORE");
+		user.setLogin("ntraore");
+		user.setPassword("pAsswordntra0re");
+		user.setProfile(Profile.USER);
+
+		daoService.save(user);
+		//verify that the user is saved correctly
+		final List<User> users = daoService.getAll(User.class);
+		Assert.assertEquals(1, users.size());
+		final User userSaved = users.get(0);
+		Assert.assertEquals("Nessan", userSaved.getFirstName());
+		Assert.assertEquals("ntraore", userSaved.getLogin());
 	}
 
 }
