@@ -3,11 +3,14 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RestangularModule } from 'ngx-restangular';
-import { AppComponent } from './app.component';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { DateTimePickerModule} from 'ngx-datetime-picker';
+import { NgxDateRangePickerModule } from 'ngx-daterangepicker';
 import { LoginComponent } from './component/authentication.component';
 import { ProfessionalRegistrationComponent } from './component/professional.registration.component';
 import { TimeSlotComponent } from './component/time.slot.component';
+import { TimeIntervalComponent } from './component/time.interval.component';
+import { WorkingDayComponent } from './component/working.day.component';
 import { AuthenticationService } from './service/authentication.service';
 import { ProfessionalService } from './service/professional.service';
 
@@ -20,7 +23,9 @@ export function restangularConfigFactory (RestangularProvider) {
   declarations: [
     LoginComponent,
     ProfessionalRegistrationComponent,
-    TimeSlotComponent
+    WorkingDayComponent,
+    TimeSlotComponent,
+    TimeIntervalComponent
   ],
   imports: [
     BrowserModule,
@@ -28,10 +33,12 @@ export function restangularConfigFactory (RestangularProvider) {
     ReactiveFormsModule,
     HttpModule,
     RestangularModule.forRoot(restangularConfigFactory),
-    ButtonsModule.forRoot()
+    ButtonsModule.forRoot(),
+    DateTimePickerModule,
+    NgxDateRangePickerModule
   ],
   providers: [AuthenticationService, ProfessionalService],
-  bootstrap: [LoginComponent, ProfessionalRegistrationComponent, TimeSlotComponent]
+  bootstrap: [LoginComponent, ProfessionalRegistrationComponent, WorkingDayComponent, TimeSlotComponent, TimeIntervalComponent]
 })
   
 export class AppModule { }

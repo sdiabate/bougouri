@@ -4,12 +4,13 @@
 	width:150px;
 	height:75px;
 	line-height:75px;
+	border: 1px solid #c0c0c0;
 }
 
 .time-slot-selected {
-	background-color:#c0c0c0;
+	background-color:#008040;
 }
 
 .time-slot-not-selected {
-	background-color:#0080ff;
+	background-color:#808080;
 }

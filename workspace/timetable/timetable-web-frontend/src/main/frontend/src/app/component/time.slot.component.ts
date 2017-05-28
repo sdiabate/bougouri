@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 })
 
 export class TimeSlotComponent {
-  private timeSlot: TimeSlot = new TimeSlot(10, 20);
+  private timeSlot: TimeSlot = new TimeSlot(new Date(), new Date());
   
   public select(): void {
     this.timeSlot.selected = !this.timeSlot.selected;

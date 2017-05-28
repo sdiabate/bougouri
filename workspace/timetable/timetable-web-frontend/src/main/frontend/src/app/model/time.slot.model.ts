@@ -1,9 +1,9 @@
 export class TimeSlot {
-  startTime: number;
-  endTime: number;
+  startTime: Date;
+  endTime: Date;
   selected: boolean;
   
-  constructor (startTime: number, endTime: number) {
+  constructor (startTime: Date, endTime: Date) {
     this.startTime = startTime;
     this.endTime = endTime;
     this.selected = true;
