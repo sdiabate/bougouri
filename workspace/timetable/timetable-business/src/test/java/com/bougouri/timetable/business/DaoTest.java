@@ -10,10 +10,13 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.bougouri.timetable.business.model.Appointment;
+import com.bougouri.timetable.business.model.Holiday;
 import com.bougouri.timetable.business.model.Professional;
 import com.bougouri.timetable.business.model.TimeSlot;
 import com.bougouri.timetable.business.model.Weekday;
 import com.bougouri.timetable.business.model.WorkingDay;
+import com.bougouri.timetable.business.model.security.Profile;
+import com.bougouri.timetable.business.model.security.User;
 
 public class DaoTest extends AbstractTest {
 
@@ -62,7 +65,7 @@ public class DaoTest extends AbstractTest {
 		Assert.assertEquals(LocalTime.of(8, 0), firstTimeSlot.getStartTime());
 		Assert.assertEquals(LocalTime.of(8, 30), firstTimeSlot.getEndTime());
 	}
-	
+
 	@Test
 	public void AppointmentTest(){
 		final Appointment appointment = new Appointment();
@@ -71,12 +74,79 @@ public class DaoTest extends AbstractTest {
 		appointment.setDate(LocalDateTime.now().plusDays(10));
 		appointment.setDuration(30);
 		appointment.setEmail("jte@live.fr");
-		
+
 		final Professional professional = new Professional("jtraore", "jtraorepwd", "Jacques", "TRAORE", "Conseillé stratégie", "Aide les pays à s'auto-suffir quand c'est possible");
-		
+
 		daoService.save(professional);
-		
+
 		appointment.setProfessional(professional);
+		daoService.save(appointment);
+
+		//Verify that the appointment is saved correctly
+		final List<Appointment> appointments = daoService.getAll(Appointment.class);
+		Assert.assertEquals(1, appointments.size());
+		final Appointment savedAppointment = appointments.get(0);
+		Assert.assertEquals("jte@live.fr", savedAppointment.getEmail());
+		Assert.assertEquals(30, savedAppointment.getDuration());
+
+		//Verify that the professional linked to the appointment is correct.
+		final Professional professionalLinked = savedAppointment.getProfessional();
+		Assert.assertEquals(professional, professionalLinked);
+
+	}
+
+	@Test
+	public void UserTest(){
+		final User user = new User();
+		user.setDescription("Utilisateur crée pour les tests unitaires");
+		user.setFirstName("Nessan");
+		user.setLastName("TRAORE");
+		user.setLogin("ntraore");
+		user.setPassword("pAsswordntra0re");
+		user.setProfile(Profile.USER);
+
+		daoService.save(user);
+		//verify that the user is saved correctly
+		final List<User> users = daoService.getAll(User.class);
+		Assert.assertEquals(1, users.size());
+		final User userSaved = users.get(0);
+		Assert.assertEquals("Nessan", userSaved.getFirstName());
+		Assert.assertEquals("ntraore", userSaved.getLogin());
+	}
+
+	@Test
+	public void HolidayTest(){
+
+		final LocalDateTime startDate = LocalDateTime.now().plusMonths(2);
+		final LocalDateTime endDate = LocalDateTime.now().plusMonths(3);
+
+		final Holiday holiday = new Holiday(startDate, endDate);
+		daoService.save(holiday);
+
+		//Verify that thye holiday is saved properly
+		final List<Holiday> holidays = daoService.getAll(Holiday.class);
+		Assert.assertEquals(1, holidays.size());
+		Assert.assertEquals(startDate, holiday.getStartDateTime());
+		Assert.assertEquals(endDate, holiday.getEndDateTime());
+	}
+
+	@Test
+	public void AuditingTest(){
+		final User user = new User();
+		user.setDescription("Utilisateur crée pour les tests unitaires");
+		user.setFirstName("Nessan");
+		user.setLastName("TRAORE");
+		user.setLogin("ntraore");
+		user.setPassword("pAsswordntra0re");
+		user.setProfile(Profile.USER);
+
+		daoService.save(user);
+		//TODO Complete the implementation of the test.
+
+		//		Assert.assertEquals("", user.getCreatedBy());
+		//		Assert.assertEquals("", user.getLastModifiedBy());
+		//		Assert.assertEquals("", user.getCreatedDate());
+		//		Assert.assertEquals("", user.getLastModifiedDate());
 	}
 
 }

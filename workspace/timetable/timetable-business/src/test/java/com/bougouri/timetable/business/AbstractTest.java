@@ -13,10 +13,12 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.bougouri.timetable.business.model.Appointment;
+import com.bougouri.timetable.business.model.Holiday;
 import com.bougouri.timetable.business.model.Professional;
 import com.bougouri.timetable.business.model.TimeSlot;
 import com.bougouri.timetable.business.model.Weekday;
 import com.bougouri.timetable.business.model.WorkingDay;
+import com.bougouri.timetable.business.model.security.User;
 import com.bougouri.timetable.business.service.impl.BasicDaoService;
 
 @RunWith(SpringRunner.class)
@@ -31,6 +33,8 @@ public class AbstractTest {
 	public void cleanDatabase() {
 		daoService.deleteAll(Appointment.class);
 		daoService.deleteAll(Professional.class);
+		daoService.deleteAll(Holiday.class);
+		daoService.deleteAll(User.class);
 	}
 
 	protected List<WorkingDay> createWorkingDays() {
