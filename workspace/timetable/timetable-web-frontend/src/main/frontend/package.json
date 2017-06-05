@@ -26,6 +26,7 @@
     "ngx-bootstrap": "^1.6.6",
     "ngx-daterangepicker": "^0.5.5",
     "ngx-datetime-picker": "^1.0.7",
+    "ngx-modal": "0.0.29",
     "ngx-restangular": "^1.0.11",
     "rxjs": "^5.1.0",
     "zone.js": "^0.8.4"

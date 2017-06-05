@@ -4,9 +4,8 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'time-interval',
   templateUrl: '../template/time.interval.html',
-  styleUrls: ['../app.component.css']
+  styleUrls: ['../css/app.component.css']
 })
-
 export class TimeIntervalComponent {
   @Input()
   private timeInterval = new TimeInterval();

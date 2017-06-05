@@ -6,9 +6,8 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'working-day',
   templateUrl: '../template/working.day.html',
-  styleUrls: ['../app.component.css'],
+  styleUrls: ['../css/app.component.css'],
 })
-
 export class WorkingDayComponent {
     private workingDay: WorkingDay;
 

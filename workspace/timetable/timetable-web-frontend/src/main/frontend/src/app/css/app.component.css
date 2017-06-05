@@ -1,0 +1,56 @@
+.main-container {
+    width: 80%;
+    border: 1px solid #F0F0F0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.header {
+    height: 60px;
+    background: #808080;
+    border: 1px solid #808080;
+    width: 100%;
+    margin: 0px;
+    clear: left;
+}
+
+.footer {
+    height: 200px;
+    background: #808080;
+    border: 1px solid #808080;
+    width: 100%;
+    margin: 0px auto;
+    padding: 1em;
+    clear: left;
+}
+
+.left {
+    height: 780px;
+    background: #F0F0F0;
+    width: 250px;
+    float: left;
+}
+
+.center {
+	height: 700px;
+	margin-top: 60px;
+	background: #ffffff;
+	overflow: hidden;
+}
+
+.time-slot {
+	text-align: center;
+	float: left;
+	width: 150px;
+	height: 75px;
+	line-height: 75px;
+	border: 1px solid #c0c0c0;
+}
+
+.time-slot-selected {
+	background-color: #008040;
+}
+
+.time-slot-not-selected {
+	background-color: #808080;
+}

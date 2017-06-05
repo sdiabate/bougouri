@@ -1,0 +1,23 @@
+<div>
+    <button type="button" id="new-account-button" (click)="professionalRegistrationModal.open()">Let's start</button>
+	<modal #professionalRegistrationModal> 
+		<modal-header>
+			<h1>Create new professional account</h1>
+		</modal-header> 
+		<modal-content> 
+			<div><professional-registration>Showing professional registration view...</professional-registration></div>
+		</modal-content> 
+		<modal-footer>
+			<div class="form-group row col-xs-12">
+				<div class=" col-xs-12">
+					<button (click)="cancel(); professionalRegistrationModal.close()" type="button" class="btn btn-danger">
+						<span class="glyphicon glyphicon-remove"></span> cancel
+					</button>
+					<button (click)="register(); professionalRegistrationModal.close()" type="submit" class="btn btn-primary">
+						<span class="glyphicon glyphicon-ok"></span> Register
+					</button>
+				</div>
+			</div>
+		</modal-footer> 
+	</modal>
+</div>
