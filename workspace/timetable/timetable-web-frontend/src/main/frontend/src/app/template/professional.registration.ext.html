@@ -1,0 +1,54 @@
+<div id="form-title">
+	<h3>Create your new professional account</h3>
+</div>
+<form (ngSubmit)="register()">
+	<div class="container-fluid">
+		<div class="form-group row col-xs-12">
+			<div class="col-xs-6">
+				<label for="login">Login:</label> <input [(ngModel)]="professional.login" name="login" class="form-control" type="text" placeholder="Login" />
+			</div>
+			<div class="col-xs-6">
+				<label for="password">Password:</label> <input [(ngModel)]="professional.password" name="password" class="form-control" type="password" placeholder="Password" />
+			</div>
+		</div>
+		<div class="form-group row col-xs-12">
+			<div class="col-xs-6">
+				<label for="firstname">Firstname:</label> <input [(ngModel)]="professional.firstname" name="firstname" class="form-control" type="text" placeholder="Firstname" />
+			</div>
+			<div class="col-xs-6">
+				<label for="password">Lastname:</label> <input [(ngModel)]="professional.lastname" name="lastname" class="form-control" type="text" placeholder="Lastname" />
+			</div>
+		</div>
+		<div class="form-group row col-xs-12">
+			<div class="col-xs-12">
+				<label for="address">Address:</label> <input [(ngModel)]="professional.address" name="address" class="form-control" type="text" placeholder="Postal address" />
+			</div>
+		</div>
+		<div class="form-group row col-xs-12">
+			<div class="col-xs-3">
+				<label for="mobilePhone">Mobile phone:</label> <input [(ngModel)]="professional.mobilePhone" name="mobilePhone" class="form-control" type="text" placeholder="Mobile phone number" />
+			</div>
+			<div class="col-xs-3">
+				<label for="landline">Land line:</label> <input [(ngModel)]="professional.landLine" name="landLine" class="form-control" type="text" placeholder="Land line number" />
+			</div>
+			<div class="col-xs-6">
+				<label for="email">Email:</label> <input [(ngModel)]="professional.email" name="email" class="form-control" type="email" placeholder="Email" />
+			</div>
+		</div>
+		<div class="form-group row col-xs-12">
+			<div class="col-xs-12">
+				<label for="specialty">Specialty:</label> <input [(ngModel)]="professional.specialty" name="specialty" class="form-control" type="text" placeholder="Specialty" />
+			</div>
+		</div>
+		<div class="form-group row col-xs-12">
+			<div class="col-xs-12 text-right">
+				<button (click)="cancel();" type="button" class="btn btn-danger">
+					<span class="glyphicon glyphicon-remove"></span> cancel
+				</button>
+				<button type="submit" class="btn btn-primary">
+					<span class="glyphicon glyphicon-ok"></span> Register
+				</button>
+			</div>
+		</div>
+	</div>
+</form>

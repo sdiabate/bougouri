@@ -1,0 +1,22 @@
+.login-container {
+	width: 400px;
+	border: 1px solid #c0c0c0;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.login-content {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+#new-account-div {
+	margin-top: 60px;
+}
+
+#new-account-div button {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
