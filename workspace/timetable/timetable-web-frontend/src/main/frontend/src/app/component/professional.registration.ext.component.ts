@@ -1,6 +1,8 @@
 import { Professional } from '../model/professional.model';
 import { ProfessionalService } from '../service/professional.service';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { SharedService } from '../service/shared.service';
 
 @Component({
     selector: 'professional-registration-ext',
@@ -11,7 +13,7 @@ import { Component } from '@angular/core';
 export class ProfessionalRegistrationExtComponent {
     private professional = new Professional();
     
-    constructor(private professionalService: ProfessionalService) {
+    constructor(private professionalService: ProfessionalService, private sharedService: SharedService, private router: Router) {
         this.professional = professionalService.findById(2);
     }
     
@@ -21,5 +23,9 @@ export class ProfessionalRegistrationExtComponent {
     
     public cancel(): void {
         console.log('Operation cancelled !');
+        console.log('previous:', this.sharedService.previousRouteUrl);
+        if(this.sharedService.previousRouteUrl != null) {
+            this.router.navigate([this.sharedService.previousRouteUrl]);
+        }
     }
 }

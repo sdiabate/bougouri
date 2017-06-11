@@ -24,7 +24,8 @@ import { SearchComponent } from '../component/search.min.component';
 import { ProfessionalRegistrationExtComponent } from '../component/professional.registration.ext.component';
 import { AuthenticationService } from '../service/authentication.service';
 import { ProfessionalService } from '../service/professional.service';
-import { AppRoutingModule }        from '../module/app.routing.module';
+import { SharedService } from '../service/shared.service';
+import { AppRoutingModule } from '../module/app.routing.module';
 import { Router } from '@angular/router';
 
 export function restangularConfigFactory (RestangularProvider) {
@@ -62,7 +63,7 @@ export function restangularConfigFactory (RestangularProvider) {
     NgxDateRangePickerModule,
     AppRoutingModule
   ],
-  providers: [AuthenticationService, ProfessionalService],
+  providers: [AuthenticationService, ProfessionalService, SharedService],
   bootstrap: [
     AppComponent
   ]
