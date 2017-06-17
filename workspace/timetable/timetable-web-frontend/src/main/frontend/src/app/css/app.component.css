@@ -54,3 +54,8 @@
 .time-slot-not-selected {
 	background-color: #808080;
 }
+
+.help-block {
+    font-size: 12px;
+    color: red;
+}
