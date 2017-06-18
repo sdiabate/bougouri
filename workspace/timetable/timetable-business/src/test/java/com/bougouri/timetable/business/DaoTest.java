@@ -6,8 +6,15 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.bougouri.timetable.business.model.Appointment;
 import com.bougouri.timetable.business.model.Holiday;
@@ -18,7 +25,12 @@ import com.bougouri.timetable.business.model.WorkingDay;
 import com.bougouri.timetable.business.model.security.Profile;
 import com.bougouri.timetable.business.model.security.User;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = BusinessStarter.class)
 public class DaoTest extends AbstractTest {
+	
+	@MockBean
+	private AuditorAware<User> auditorAware;
 
 	@Test
 	public void contextLoads() throws Exception {
@@ -67,7 +79,7 @@ public class DaoTest extends AbstractTest {
 	}
 
 	@Test
-	public void AppointmentTest(){
+	public void AppointmentTest() {
 		final Appointment appointment = new Appointment();
 		appointment.setAddress("25 avenue Pierre Gilles 13100 Aix-en-Provence");
 		appointment.setClient("Maïmouna Zoundi");
@@ -82,21 +94,21 @@ public class DaoTest extends AbstractTest {
 		appointment.setProfessional(professional);
 		daoService.save(appointment);
 
-		//Verify that the appointment is saved correctly
+		// Verify that the appointment is saved correctly
 		final List<Appointment> appointments = daoService.getAll(Appointment.class);
 		Assert.assertEquals(1, appointments.size());
 		final Appointment savedAppointment = appointments.get(0);
 		Assert.assertEquals("jte@live.fr", savedAppointment.getEmail());
 		Assert.assertEquals(30, savedAppointment.getDuration());
 
-		//Verify that the professional linked to the appointment is correct.
+		// Verify that the professional linked to the appointment is correct.
 		final Professional professionalLinked = savedAppointment.getProfessional();
 		Assert.assertEquals(professional, professionalLinked);
 
 	}
 
 	@Test
-	public void UserTest(){
+	public void UserTest() {
 		final User user = new User();
 		user.setDescription("Utilisateur crée pour les tests unitaires");
 		user.setFirstName("Nessan");
@@ -106,7 +118,7 @@ public class DaoTest extends AbstractTest {
 		user.setProfile(Profile.USER);
 
 		daoService.save(user);
-		//verify that the user is saved correctly
+		// verify that the user is saved correctly
 		final List<User> users = daoService.getAll(User.class);
 		Assert.assertEquals(1, users.size());
 		final User userSaved = users.get(0);
@@ -115,7 +127,7 @@ public class DaoTest extends AbstractTest {
 	}
 
 	@Test
-	public void HolidayTest(){
+	public void HolidayTest() {
 
 		final LocalDateTime startDate = LocalDateTime.now().plusMonths(2);
 		final LocalDateTime endDate = LocalDateTime.now().plusMonths(3);
@@ -123,7 +135,7 @@ public class DaoTest extends AbstractTest {
 		final Holiday holiday = new Holiday(startDate, endDate);
 		daoService.save(holiday);
 
-		//Verify that thye holiday is saved properly
+		// Verify that thye holiday is saved properly
 		final List<Holiday> holidays = daoService.getAll(Holiday.class);
 		Assert.assertEquals(1, holidays.size());
 		Assert.assertEquals(startDate, holiday.getStartDateTime());
@@ -131,7 +143,8 @@ public class DaoTest extends AbstractTest {
 	}
 
 	@Test
-	public void AuditingTest(){
+	public void AuditingTest() {
+		// Create the user
 		final User user = new User();
 		user.setDescription("Utilisateur crée pour les tests unitaires");
 		user.setFirstName("Nessan");
@@ -141,12 +154,24 @@ public class DaoTest extends AbstractTest {
 		user.setProfile(Profile.USER);
 
 		daoService.save(user);
-		//TODO Complete the implementation of the test.
 
-		//		Assert.assertEquals("", user.getCreatedBy());
-		//		Assert.assertEquals("", user.getLastModifiedBy());
-		//		Assert.assertEquals("", user.getCreatedDate());
-		//		Assert.assertEquals("", user.getLastModifiedDate());
+		// Mock the auditing aware bean so it returns the created user as the user connected
+		Mockito.when(auditorAware.getCurrentAuditor()).thenReturn(user);
+		// Check that Mokito mocking is properly working
+		Assertions.assertThat(auditorAware.getCurrentAuditor()).isEqualTo(user);
+		
+		// Create a professional
+		final Professional professional = new Professional("jtraore", "jtraorepwd", "Jacques", "TRAORE", "Conseillé stratégie", "Aide les pays à s'auto-suffir quand c'est possible");
+
+		// Check that the professional has no creation information yet
+		Assertions.assertThat(professional.getCreatedBy()).isNull();
+		Assertions.assertThat(professional.getLastModifiedBy()).isNull();
+
+		daoService.save(professional);
+
+		// Check that the previously created user has been linked to the professional after it persistence
+		Assertions.assertThat(professional.getCreatedBy()).isEqualTo(user);
+		Assertions.assertThat(professional.getLastModifiedBy()).isEqualTo(user);
 	}
 
 }
