@@ -10,19 +10,42 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
     
+    loginSuccess: boolean = false;
+    loginTried: boolean = false;
+
     loginForm = this.formBuilder.group({
-        email: '',
+        login: '',
         password: ''
     });
     
-    constructor(private router: Router, private authenticationService: AuthenticationService, private formBuilder: FormBuilder) {}
+    constructor(private router: Router, private authenticationService: AuthenticationService, private formBuilder: FormBuilder) {
+        this.loginForm.valueChanges.subscribe(data => {
+            this.loginTried = false;
+        });
+    }
     
-    doLogin(event) {
-        console.log(event);
+    doLogin() {
         console.log(this.loginForm.value);
+        
+        if(!this.formFilled()) {
+            return;
+        }
+        
+        this.loginTried = true;
+        
+        if(this.authenticationService.login(this.loginForm.value.login, this.loginForm.value.password)) {
+            this.loginSuccess = true;
+            this.router.navigate(['/professionalHome']);
+        } else {
+            this.loginSuccess = false;
+        }
     }
     
     showRegistrationComponent(): void {
         this.router.navigate(['/professionalRegistrationExt']);
+    }
+    
+    formFilled(): boolean {
+        return this.loginForm.value.login != '' && this.loginForm.value.password != '';
     }
 }

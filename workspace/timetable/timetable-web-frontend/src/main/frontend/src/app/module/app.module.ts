@@ -22,6 +22,7 @@ import { FooterComponent } from '../component/app.footer.component';
 import { ContactComponent } from '../component/contact.component';
 import { SearchComponent } from '../component/search.min.component';
 import { ProfessionalRegistrationExtComponent } from '../component/professional.registration.ext.component';
+import { ProfessionalHomeComponent } from '../component/professional.home.component';
 import { AuthenticationService } from '../service/authentication.service';
 import { ProfessionalService } from '../service/professional.service';
 import { SharedService } from '../service/shared.service';
@@ -49,7 +50,8 @@ export function restangularConfigFactory (RestangularProvider) {
     FooterComponent,
     ContactComponent,
     SearchComponent,
-    ProfessionalRegistrationExtComponent
+    ProfessionalRegistrationExtComponent,
+    ProfessionalHomeComponent
   ],
   imports: [
     BrowserModule,

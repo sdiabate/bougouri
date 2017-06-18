@@ -2,14 +2,17 @@
 	<ul>
 	  <li><a routerLink="/home">Home</a></li>
 	  <li><a routerLink="/contact">Contact us</a></li>
-	  <li style="float:right">
+	  <li *ngIf="!userConnected" style="float:right">
 	  	<div id="new-account-div">
 	  		<professional-registration-modal>Professional registration modal</professional-registration-modal>
 	  	</div>
 	  </li>
 	  <li style="float:right">
 	  	<div id="new-account-div">
-	  		<button type="button" id="new-account-button" (click)="showLoginComponent()">login</button>
+	  		<button *ngIf="!userConnected; else logoff_button" type="button" id="new-account-button" (click)="showLoginComponent()">Login</button>
+	  		<ng-template #logoff_button>
+	  			<button type="button" id="new-account-button" (click)="disconnect()">Disconnect</button>
+	  		</ng-template>
 	  	</div>
 	  </li>
 	</ul>

@@ -1,6 +1,7 @@
 <div class="login-container">
 	<div class="login-content">
-		<form [formGroup]="loginForm" (ngSubmit)="doLogin($event)" #f="ngForm" novalidate>
+		<form [formGroup]="loginForm" (ngSubmit)="doLogin()" #f="ngForm" novalidate>
+			<div *ngIf="loginTried && formFilled() && !loginSuccess" class="help-block">Authentication failed ! please try again</div>
 			<div class="container-fluid">
 				<div class="form-group">
 					<label for="login">Login:</label>
@@ -8,9 +9,9 @@
 						<div class="input-group-addon">
 							<span class="glyphicon glyphicon-user"></span>
 						</div>
-						<input class="form-control" formControlName="email" type="text" placeholder="Your login or email" />
+						<input class="form-control" formControlName="login" type="text" placeholder="Your login or email" />
 					</div>
-					<div *ngIf="f.submitted && loginForm.value.email == ''" class="help-block">Username is required</div>
+					<div *ngIf="f.submitted && loginForm.value.login == ''" class="help-block">Username is required</div>
 				</div>
 				<div class="form-group">
 					<label for="password">Password:</label>

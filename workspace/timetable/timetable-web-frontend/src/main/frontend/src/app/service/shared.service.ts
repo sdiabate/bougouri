@@ -1,18 +1,11 @@
 import { Injectable } from '@angular/core';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Injectable()
 export class SharedService {
     
-    private _connectedUser: string;
+    connectedUser = new ReplaySubject<string>(1);
 
-    public currentRouteUrl: string;
-    public previousRouteUrl: string;
-
-    get connectedUser(): string {
-        return this._connectedUser;
-    }
-    
-    set connectedUser(user: string) {
-        this._connectedUser = user;
-    }
+    currentRouteUrl: string;
+    previousRouteUrl: string;
 }

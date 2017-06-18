@@ -1,6 +1,7 @@
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes, Router, NavigationEnd } from '@angular/router';
 import { HomeComponent } from '../component/app.home.component';
+import { ProfessionalHomeComponent } from '../component/professional.home.component';
 import { LoginComponent } from '../component/authentication.component';
 import { ContactComponent } from '../component/contact.component';
 import { ProfessionalRegistrationExtComponent } from '../component/professional.registration.ext.component';
@@ -22,6 +23,10 @@ const appRoutes: Routes = [
   {
       path: 'professionalRegistrationExt',
       component: ProfessionalRegistrationExtComponent,
+  },
+  {
+      path: 'professionalHome',
+      component: ProfessionalHomeComponent,
   },
   { 
     path: '',  

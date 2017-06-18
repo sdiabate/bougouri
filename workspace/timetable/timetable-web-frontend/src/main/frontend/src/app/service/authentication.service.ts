@@ -10,13 +10,14 @@ export class AuthenticationService {
     login(user: string, password: string): boolean {
         this.logoff();
         if(user == "admin" && password == "admin") {
-            this.sharedService.connectedUser = user;
+            this.sharedService.connectedUser.next(user);
+            return true;
         }
-        return this.sharedService.connectedUser != null;
+        return false;
     }
     
     logoff(): void {
-        this.sharedService.connectedUser = null;
+        this.sharedService.connectedUser.next(null);
     }
     
 }
