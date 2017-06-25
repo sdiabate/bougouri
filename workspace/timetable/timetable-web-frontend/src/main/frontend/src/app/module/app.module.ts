@@ -23,11 +23,15 @@ import { ContactComponent } from '../component/contact.component';
 import { SearchComponent } from '../component/search.min.component';
 import { ProfessionalRegistrationExtComponent } from '../component/professional.registration.ext.component';
 import { ProfessionalHomeComponent } from '../component/professional.home.component';
+import { ProfessionalPlanningComponent } from '../component/professional.home.planning.component';
+import { ProfessionalAppointmentComponent } from '../component/professional.home.appointment.component';
+import { ProfessionalHolidayComponent } from '../component/professional.home.holiday.component';
 import { AuthenticationService } from '../service/authentication.service';
 import { ProfessionalService } from '../service/professional.service';
 import { SharedService } from '../service/shared.service';
 import { AppRoutingModule } from '../module/app.routing.module';
 import { Router } from '@angular/router';
+import {TabsModule} from "ngx-tabs";
 
 export function restangularConfigFactory (RestangularProvider) {
   RestangularProvider.setBaseUrl('http://localhost:8080/timetable');
@@ -51,7 +55,10 @@ export function restangularConfigFactory (RestangularProvider) {
     ContactComponent,
     SearchComponent,
     ProfessionalRegistrationExtComponent,
-    ProfessionalHomeComponent
+    ProfessionalHomeComponent,
+    ProfessionalPlanningComponent,
+    ProfessionalAppointmentComponent,
+    ProfessionalHolidayComponent
   ],
   imports: [
     BrowserModule,
@@ -63,6 +70,7 @@ export function restangularConfigFactory (RestangularProvider) {
     DateTimePickerModule,
     ModalModule,
     NgxDateRangePickerModule,
+    TabsModule,
     AppRoutingModule
   ],
   providers: [AuthenticationService, ProfessionalService, SharedService],
