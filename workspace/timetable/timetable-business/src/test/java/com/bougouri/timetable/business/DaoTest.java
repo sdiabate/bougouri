@@ -1,5 +1,7 @@
 package com.bougouri.timetable.business;
 
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Comparator;
@@ -14,7 +16,9 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.AuditorAware;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import com.bougouri.timetable.business.model.Appointment;
 import com.bougouri.timetable.business.model.Holiday;
@@ -24,9 +28,15 @@ import com.bougouri.timetable.business.model.Weekday;
 import com.bougouri.timetable.business.model.WorkingDay;
 import com.bougouri.timetable.business.model.security.Profile;
 import com.bougouri.timetable.business.model.security.User;
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BusinessStarter.class)
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
+	DbUnitTestExecutionListener.class })
+@DbUnitConfiguration(databaseConnection={"dataSource"})
 public class DaoTest extends AbstractTest {
 	
 	@MockBean
@@ -143,6 +153,7 @@ public class DaoTest extends AbstractTest {
 	}
 
 	@Test
+	@DatabaseSetup("User.xml")
 	public void AuditingTest() {
 		// Create the user
 		final User user = new User();
@@ -173,5 +184,14 @@ public class DaoTest extends AbstractTest {
 		Assertions.assertThat(professional.getCreatedBy()).isEqualTo(user);
 		Assertions.assertThat(professional.getLastModifiedBy()).isEqualTo(user);
 	}
+	
+	@Test
+	public void testURL(){
 
+		final Reader fileReader = new InputStreamReader(BusinessStarter.class.getClassLoader().getResourceAsStream("User.xml"));
+
+		//		final URL url = this.getClass().getResource("classpath:User.xml");
+		//		final File file = new File(url.getPath());
+	}
+	
 }

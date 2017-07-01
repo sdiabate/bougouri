@@ -1,6 +1,7 @@
 package com.bougouri.timetable.business.dao;
 
 import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -33,6 +34,11 @@ public class DaoConfig {
 		em.setJpaVendorAdapter(vendorAdapter);
 		em.setJpaProperties(dataSourceConfig.getServerConnectionProperties());
 		return em;
+	}
+	
+	@Bean
+	public DataSource dataSource(){
+		return dataSourceConfig.getDataSource();
 	}
 
 	@Bean

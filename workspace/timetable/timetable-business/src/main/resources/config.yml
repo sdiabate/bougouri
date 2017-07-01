@@ -3,6 +3,6 @@ dataSource:
    dialect: org.hibernate.dialect.PostgreSQLDialect
    url: jdbc:postgresql://localhost:5432/bougouri
    user: postgres
-   password: YWRtaW4=
+   password: amFja2k=
    schemaStartegy: create-drop
    showSql: true
