@@ -1,7 +1,5 @@
 package com.bougouri.timetable.business;
 
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Comparator;
@@ -38,7 +36,7 @@ import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 	DbUnitTestExecutionListener.class })
 @DbUnitConfiguration(databaseConnection={"dataSource"})
 public class DaoTest extends AbstractTest {
-	
+
 	@MockBean
 	private AuditorAware<User> auditorAware;
 
@@ -153,7 +151,7 @@ public class DaoTest extends AbstractTest {
 	}
 
 	@Test
-	@DatabaseSetup("User.xml")
+	@DatabaseSetup("/users.xml")
 	public void AuditingTest() {
 		// Create the user
 		final User user = new User();
@@ -170,7 +168,7 @@ public class DaoTest extends AbstractTest {
 		Mockito.when(auditorAware.getCurrentAuditor()).thenReturn(user);
 		// Check that Mokito mocking is properly working
 		Assertions.assertThat(auditorAware.getCurrentAuditor()).isEqualTo(user);
-		
+
 		// Create a professional
 		final Professional professional = new Professional("jtraore", "jtraorepwd", "Jacques", "TRAORE", "Conseillé stratégie", "Aide les pays à s'auto-suffir quand c'est possible");
 
@@ -184,14 +182,5 @@ public class DaoTest extends AbstractTest {
 		Assertions.assertThat(professional.getCreatedBy()).isEqualTo(user);
 		Assertions.assertThat(professional.getLastModifiedBy()).isEqualTo(user);
 	}
-	
-	@Test
-	public void testURL(){
 
-		final Reader fileReader = new InputStreamReader(BusinessStarter.class.getClassLoader().getResourceAsStream("User.xml"));
-
-		//		final URL url = this.getClass().getResource("classpath:User.xml");
-		//		final File file = new File(url.getPath());
-	}
-	
 }
